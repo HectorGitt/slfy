@@ -1,0 +1,94 @@
+---
+layout: default
+title: An open format for engineering models that move and calculate
+---
+<style>
+  .hero { display: grid; gap: 28px; align-items: center; grid-template-columns: minmax(0, 1fr); margin-top: 8px; }
+  @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
+  .kicker { font: 600 12px/1 "JetBrains Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .hero h1 { margin: 12px 0 14px; }
+  .lead { font-size: 16.5px; color: var(--mute); margin: 0 0 22px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 10px 18px; font-weight: 600; font-size: 14px; border: 1px solid var(--line); color: var(--ink); background: var(--panel); }
+  .btn:hover { text-decoration: none; border-color: var(--mute); }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .stage { position: relative; aspect-ratio: 16 / 11; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 30px 80px -40px rgba(0,0,0,.6); }
+  .stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .stage .hint { position: absolute; left: 14px; top: 12px; font-size: 12px; color: var(--mute); pointer-events: none; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); margin-top: 16px; }
+  .card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); overflow: hidden; color: var(--ink); }
+  a.card:hover { text-decoration: none; border-color: var(--accent); }
+  .card img { display: block; width: 100%; height: auto; aspect-ratio: 800 / 520; object-fit: cover; background: var(--panel-2); }
+  .card .body { padding: 12px 14px 14px; }
+  .card h3 { margin: 0 0 4px; font-size: 15px; }
+  .card p { margin: 0; font-size: 13px; color: var(--mute); line-height: 1.5; }
+  .tag { display: inline-block; margin-left: 6px; font: 600 10.5px/1 Sora, sans-serif; padding: 4px 7px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); vertical-align: 2px; }
+  .features { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); margin-top: 16px; }
+  .feature { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); padding: 16px 18px; }
+  .feature h3 { margin: 0 0 6px; font-size: 15px; }
+  .feature p { margin: 0; font-size: 13.5px; color: var(--mute); line-height: 1.55; }
+  .compare td:first-child { font-weight: 600; white-space: nowrap; }
+  .yes { color: var(--accent); font-weight: 600; }
+</style>
+
+<section class="hero">
+  <div>
+    <div class="kicker">Open format · draft 0.1</div>
+    <h1>Engineering models that move and calculate, in one file.</h1>
+    <p class="lead">A <code>.slfy</code> file carries a 3D machine <strong>and its engineering</strong>: parts placed by how they fit, motion, sizes as sliders, and the calculations and charts that go with it. Open one, turn it, run it, change a size and watch the working follow.</p>
+    <div class="buttons">
+      <a class="btn primary" href="{{ '/viewer/?file=../examples/spur-gear-pair.slfy' | relative_url }}">Open the viewer</a>
+      <a class="btn" href="{{ '/SPEC.html' | relative_url }}">Read the spec</a>
+      <a class="btn" href="https://github.com/HectorGitt/slfy">GitHub</a>
+    </div>
+  </div>
+  <div class="stage">
+    <iframe title="A spur gear pair, live" loading="lazy" src="{{ '/viewer/?embed=1&file=../examples/spur-gear-pair.slfy' | relative_url }}"></iframe>
+  </div>
+</section>
+
+<h2 id="what">What a file holds</h2>
+<div class="features">
+  <div class="feature"><h3>Parts from real shapes</h3><p>Gears, pulleys, sprockets, springs, bolts, lathe profiles and extrusions, with boolean cuts. Any size can be a formula of the model's values.</p></div>
+  <div class="feature"><h3>Placed by relation</h3><p>On a shaft, meshing with a gear, driven by a crank, through a Hooke's joint: the file says how parts fit, and the positions follow.</p></div>
+  <div class="feature"><h3>Motion</h3><p>Name the driver; everything it drives turns, slides and swings with it at the right ratio.</p></div>
+  <div class="feature"><h3>Live calculations</h3><p>Equations worked in order from the model's own sizes, with limits flagged, so moving a slider re-works everything.</p></div>
+  <div class="feature"><h3>Charts and forces</h3><p>Bending moment diagrams and curves sampled from formulas; loads, moments and dimensions attached to parts.</p></div>
+  <div class="feature"><h3>Worked questions</h3><p>A problem's givens as sliders and its solution as numbered steps with answers, so a textbook question becomes a model.</p></div>
+</div>
+
+<h2 id="examples">Examples</h2>
+<p>Each opens in the viewer. Ten files: three short tutorials, a worked question, and six models from the Solidify library.</p>
+<div class="grid">
+{% for e in site.data.examples %}
+  <a class="card" href="{{ '/viewer/?file=../examples/' | relative_url }}{{ e.file }}.slfy">
+    <picture>
+      <source srcset="{{ '/img/' | relative_url }}{{ e.file }}-dark.webp" media="(prefers-color-scheme: dark)">
+      <img src="{{ '/img/' | relative_url }}{{ e.file }}-light.webp" alt="{{ e.title }}" loading="lazy" width="800" height="520">
+    </picture>
+    <div class="body"><h3>{{ e.title }}{% if e.tag %}<span class="tag">{{ e.tag }}</span>{% endif %}</h3><p>{{ e.text }}</p></div>
+  </a>
+{% endfor %}
+</div>
+
+<h2 id="use">Use it</h2>
+<h3>Open a file</h3>
+<p>Drop any <code>.slfy</code> on the <a href="{{ '/viewer/' | relative_url }}">viewer</a>, or link to one: <code>https://slfy.solidify.studio/viewer/?file=https://…/model.slfy</code> (the site holding the file must allow it to be fetched; GitHub's raw files do).</p>
+<h3>Put a live model on your page</h3>
+<pre><code>&lt;iframe src="https://slfy.solidify.studio/viewer/?embed=1&amp;file=https://…/model.slfy"
+        width="100%" height="460" style="border:0;border-radius:16px" loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+<h3>Check a file</h3>
+<p>Validate against the <a href="{{ '/schema/slfy-0.1.schema.json' | relative_url }}">JSON Schema</a> with any JSON Schema 2020-12 validator; the <a href="{{ '/SPEC.html' | relative_url }}">specification</a> says how files are drawn and worked out.</p>
+<h3>Make files</h3>
+<p>Write them by hand (start from the examples), generate them from your own tools, or build one in <a href="https://solidify.studio">Solidify</a> and download it.</p>
+
+<h2 id="why">Why another format</h2>
+<table class="compare">
+  <thead><tr><th></th><th>Shape</th><th>How parts fit and move</th><th>Live calculations</th><th>Resizable</th></tr></thead>
+  <tbody>
+    <tr><td>glTF</td><td>meshes</td><td>baked animation</td><td>–</td><td>–</td></tr>
+    <tr><td>STEP</td><td>exact CAD</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td>URDF / SDFormat</td><td>meshes</td><td>joints</td><td>–</td><td>–</td></tr>
+    <tr><td>.slfy</td><td class="yes">shapes</td><td class="yes">mounts and motion</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+  </tbody>
+</table>

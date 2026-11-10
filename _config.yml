@@ -15,7 +15,7 @@ relative_links:
   enabled: true
   collections: false
 readme_index:
-  enabled: true
+  enabled: false
 defaults:
   - scope: { path: "" }
     values: { layout: default }

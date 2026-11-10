@@ -1,0 +1,31 @@
+- file: spur-gear-pair
+  title: Spur gear pair
+  text: Gears placed by relation; the wheel turns from its driver.
+- file: shaft-in-torsion
+  title: Solid shaft in torsion
+  text: Sizes as sliders, shear stress and twist worked live, and a chart.
+- file: beam-question
+  title: Simply supported beam
+  text: "A worked question: the reactions and the largest bending moment."
+  tag: Question
+- file: open-differential
+  title: Open differential
+  text: Ring, pinion, spider and side gears splitting the torque.
+- file: worm-reducer
+  title: Worm reducer 30:1
+  text: A right-angle worm drive with its torque and efficiency.
+- file: helical-gear-pair
+  title: Helical gear pair
+  text: Parallel shafts, the helix angle and the axial thrust.
+- file: quick-return-mechanism
+  title: Quick-return mechanism
+  text: "Crank and slotted lever: a shaper's fast return stroke."
+- file: scotch-yoke
+  title: Scotch yoke
+  text: "A crank pin in a slotted yoke: pure harmonic motion."
+- file: muff-coupling
+  title: Muff coupling
+  text: A sleeve joining two shafts, with its key and torque checks.
+- file: minimal-block
+  title: A block on a plate
+  text: "The smallest useful file: one part placed on another."

@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if page.url == "/" %}.slfy · an open format for engineering models{% else %}{{ page.title | default: "Specification" }} · .slfy{% endif %}</title>
+  <meta property="og:title" content=".slfy · engineering models that move and calculate">
+  <meta property="og:description" content="{{ site.description }}">
+  <meta property="og:image" content="{{ '/img/spur-gear-pair-dark.webp' | absolute_url }}">
   <meta name="description" content="{{ site.description }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,6 +80,7 @@
       <nav>
         <a href="{{ '/' | relative_url }}"{% if page.url == "/" %} class="on"{% endif %}>Overview</a>
         <a href="{{ '/SPEC.html' | relative_url }}"{% if page.url contains "SPEC" %} class="on"{% endif %}>Specification</a>
+        <a href="{{ '/viewer/' | relative_url }}">Viewer</a>
         <a href="{{ '/schema/slfy-0.1.schema.json' | relative_url }}">Schema</a>
         <a href="{{ '/#examples' | relative_url }}">Examples</a>
         <a href="https://github.com/HectorGitt/slfy">GitHub</a>
