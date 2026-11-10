@@ -13,14 +13,14 @@ A `.slfy` file is one JSON document describing a 3D engineering model **and its 
 
 glTF carries meshes; STEP carries exact CAD; neither carries the mechanism or the working. `.slfy` does.
 
-Status: **draft 0.1** (November 2026). Expect changes before 1.0.
+Status: **draft 0.1** (November 2026). Expect changes before 1.0. Website: <https://slfy.solidify.studio>.
 
 | | |
 |---|---|
 | Extension | `.slfy` (readers should also accept `.solidify.json`) |
 | Media type | `application/vnd.solidify+json` (not yet registered with IANA) |
 | Encoding | UTF-8 JSON |
-| Schema | [`schema/slfy-0.1.schema.json`](schema/slfy-0.1.schema.json) (JSON Schema 2020-12), also at `https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json` |
+| Schema | [`schema/slfy-0.1.schema.json`](schema/slfy-0.1.schema.json) (JSON Schema 2020-12), at `https://slfy.solidify.studio/schema/slfy-0.1.schema.json` |
 | Specification | [`SPEC.md`](SPEC.md) |
 | Examples | [`examples/`](examples/) |
 
@@ -49,15 +49,15 @@ Status: **draft 0.1** (November 2026). Expect changes before 1.0.
 
 | File | Shows |
 |---|---|
-| `minimal-block.slfy` | the least a file needs; placing by relation |
-| `shaft-in-torsion.slfy` | parameters, formulas as sizes, motion, calculations with a limit, a chart |
-| `spur-gear-pair.slfy` | gears, `mesh` mounts, a driven gear turning from its driver |
-| `beam-question.slfy` | a worked question: givens, steps, answers, loads and reactions, a bending moment diagram |
-| `helical-gear-pair.slfy`, `worm-reducer.slfy`, `open-differential.slfy`, `scotch-yoke.slfy`, `quick-return-mechanism.slfy`, `muff-coupling.slfy` | models from the Solidify library, reviewed by its team |
+| [`minimal-block.slfy`](examples/minimal-block.slfy) | the least a file needs; placing by relation |
+| [`shaft-in-torsion.slfy`](examples/shaft-in-torsion.slfy) | parameters, formulas as sizes, motion, calculations with a limit, a chart |
+| [`spur-gear-pair.slfy`](examples/spur-gear-pair.slfy) | gears, `mesh` mounts, a driven gear turning from its driver |
+| [`beam-question.slfy`](examples/beam-question.slfy) | a worked question: givens, steps, answers, loads and reactions, a bending moment diagram |
+| [`helical-gear-pair.slfy`](examples/helical-gear-pair.slfy), [`worm-reducer.slfy`](examples/worm-reducer.slfy), [`open-differential.slfy`](examples/open-differential.slfy), [`scotch-yoke.slfy`](examples/scotch-yoke.slfy), [`quick-return-mechanism.slfy`](examples/quick-return-mechanism.slfy), [`muff-coupling.slfy`](examples/muff-coupling.slfy) | models from the Solidify library, reviewed by its team |
 
 Solidify opens them under Create → Open a model file (`https://solidify.studio/#/create/open`, arriving with
 its next release), and a link opens one straight in: `https://solidify.studio/#/create/open?url=<https link to
-the file>`. The raw files here work as such links.
+the file>`. The example files on this site work as such links.
 
 ## Checking a file
 

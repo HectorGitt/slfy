@@ -31,7 +31,7 @@ UTF-8 JSON, one object:
 | `view` | MAY | how it is first shown (section 12); readers MAY ignore it |
 | `meta` | MAY | `generator`, `created` (ISO date), `license` (SPDX id), `source` |
 | `extensions` | MAY | namespaced additions (section 13) |
-| `$schema` | MAY | URL of the JSON Schema |
+| `$schema` | MAY | URL of the JSON Schema: `https://slfy.solidify.studio/schema/slfy-0.1.schema.json` |
 
 **Versions.** A reader of MAJOR.x SHOULD open any file of the same MAJOR, ignoring fields it does not know.
 A newer MAJOR MAY change meanings; a reader SHOULD warn and try anyway. Before 1.0, minor versions MAY break.

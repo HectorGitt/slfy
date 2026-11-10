@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "$id": "https://slfy.solidify.studio/schema/slfy-0.1.schema.json",
   "title": "Solidify model file (.slfy) 0.1",
   "description": "A 3D engineering model that moves and calculates: parameters, parts placed by relation, motion, annotations, live calculations, charts and the question it answers. See format/SPEC.md.",
   "type": "object",

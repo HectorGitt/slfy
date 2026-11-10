@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.url == "/" %}.slfy · an open format for engineering models{% else %}{{ page.title | default: "Specification" }} · .slfy{% endif %}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f6f2; --panel: #ffffff; --panel-2: #eef0ea; --line: rgba(14, 18, 12, 0.1);
+      --ink: #0e120c; --mute: #4c5648; --accent: #4d7c0f; --accent-ink: #ffffff; --code-bg: #eef0ea;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #050607; --panel: #0c0f10; --panel-2: #121617; --line: rgba(255, 255, 255, 0.08);
+        --ink: #f5f7f2; --mute: #a3aaa0; --accent: #c6f24e; --accent-ink: #0b1003; --code-bg: #121617;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #050607; --panel: #0c0f10; --panel-2: #121617; --line: rgba(255, 255, 255, 0.08);
+      --ink: #f5f7f2; --mute: #a3aaa0; --accent: #c6f24e; --accent-ink: #0b1003; --code-bg: #121617;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15.5px/1.7 Sora, system-ui, sans-serif; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .bar { max-width: 960px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .brand { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--ink); }
+    .brand span { color: var(--accent); }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; margin-left: auto; }
+    nav a { color: var(--mute); font-size: 13.5px; font-weight: 500; padding: 6px 12px; border-radius: 999px; }
+    nav a:hover, nav a.on { background: var(--panel-2); color: var(--ink); text-decoration: none; }
+    main { max-width: 960px; margin: 0 auto; padding: 36px 16px 64px; }
+    h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.12; letter-spacing: -0.03em; margin: 0 0 18px; font-weight: 600; }
+    h2 { font-size: 22px; letter-spacing: -0.015em; margin: 44px 0 12px; padding-top: 8px; border-top: 1px solid var(--line); font-weight: 600; }
+    h3 { font-size: 17px; margin: 28px 0 8px; font-weight: 600; }
+    p, li { color: var(--ink); }
+    ul, ol { padding-left: 22px; }
+    code { font: 500 0.88em/1.5 "JetBrains Mono", ui-monospace, monospace; background: var(--code-bg); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+    pre { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; overflow-x: auto; }
+    pre code { background: none; padding: 0; font-size: 13px; overflow-wrap: normal; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+    th { font-weight: 600; color: var(--mute); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.04em; }
+    tr:last-child td { border-bottom: 0; }
+    blockquote { margin: 16px 0; padding: 4px 18px; border-left: 3px solid var(--accent); color: var(--mute); }
+    footer { border-top: 1px solid var(--line); color: var(--mute); font-size: 13px; }
+    footer .bar { padding: 22px 16px; }
+    .theme { margin-left: 4px; border: 1px solid var(--line); background: var(--panel); color: var(--mute); border-radius: 999px; padding: 5px 10px; font: 500 12.5px Sora, sans-serif; cursor: pointer; }
+    @media (max-width: 560px) { nav { margin-left: 0; width: 100%; } body { font-size: 15px; } }
+  </style>
+  <script>
+    try { var t = localStorage.getItem('slfy.theme'); if (t) document.documentElement.setAttribute('data-theme', t) } catch (e) {}
+  </script>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href="{{ '/' | relative_url }}"><span>.</span>slfy</a>
+      <nav>
+        <a href="{{ '/' | relative_url }}"{% if page.url == "/" %} class="on"{% endif %}>Overview</a>
+        <a href="{{ '/SPEC.html' | relative_url }}"{% if page.url contains "SPEC" %} class="on"{% endif %}>Specification</a>
+        <a href="{{ '/schema/slfy-0.1.schema.json' | relative_url }}">Schema</a>
+        <a href="{{ '/#examples' | relative_url }}">Examples</a>
+        <a href="https://github.com/HectorGitt/slfy">GitHub</a>
+        <button class="theme" type="button" onclick="(function(){var r=document.documentElement;var dark=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);var n=dark?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('slfy.theme',n)}catch(e){}})()" aria-label="Switch light or dark">◐</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    {{ content }}
+  </main>
+  <footer>
+    <div class="bar">
+      <span>Specification, schema and examples: CC BY 4.0 · code: Apache 2.0 · maintained by <a href="https://solidify.studio">Solidify</a></span>
+    </div>
+  </footer>
+  <script>
+    // wide tables scroll inside their own box on a phone, never the page
+    document.querySelectorAll('main table').forEach(function (t) { var w = document.createElement('div'); w.className = 'table-wrap'; t.parentNode.insertBefore(w, t); w.appendChild(t) })
+  </script>
+</body>
+</html>

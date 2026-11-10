@@ -1,0 +1,22 @@
+title: .slfy
+description: An open format for 3D engineering models that move and calculate.
+url: https://hectorgitt.github.io
+baseurl: /slfy
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+plugins:
+  - jekyll-relative-links
+  - jekyll-readme-index
+  - jekyll-optional-front-matter
+  - jekyll-titles-from-headings
+relative_links:
+  enabled: true
+  collections: false
+readme_index:
+  enabled: true
+defaults:
+  - scope: { path: "" }
+    values: { layout: default }
+exclude: [LICENSE, LICENSE-SPEC, CNAME]
