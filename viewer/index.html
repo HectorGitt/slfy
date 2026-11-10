@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>.slfy viewer</title>
+    <meta name="description" content="Open a .slfy engineering model: turn it, run it, cut it open, move its sizes and watch its working update." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      // the page's theme: ?theme=light|dark, else the visitor's own setting (the app's tokens: dark unless data-theme="light")
+      ;(function () {
+        var t = new URLSearchParams(location.search).get('theme')
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        try { var s = localStorage.getItem('slfy.theme'); if (!new URLSearchParams(location.search).get('theme') && (s === 'light' || s === 'dark')) t = s } catch (e) {}
+        document.documentElement.setAttribute('data-theme', t)
+      })()
+    </script>
+    <style>html,body,#root{height:100%;margin:0}</style>
+    <script type="module" crossorigin src="../viewer/assets/index-CSIZdKnu.js"></script>
+    <link rel="stylesheet" crossorigin href="../viewer/assets/index-DRQAZTYd.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
