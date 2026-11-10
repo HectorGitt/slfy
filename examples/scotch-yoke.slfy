@@ -1,0 +1,479 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "scotch-yoke",
+    "title": "Scotch Yoke Mechanism",
+    "summary": "A Scotch yoke converting rotary motion into exact simple harmonic reciprocating linear motion via a slotted crosshead.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "r",
+        "label": "Crank Radius",
+        "symbol": "r",
+        "value": 0.06,
+        "min": 0.03,
+        "max": 0.09,
+        "step": 0.005,
+        "unit": "m"
+      },
+      {
+        "id": "rpm",
+        "label": "Crank Speed",
+        "symbol": "n",
+        "value": 60,
+        "min": 15,
+        "max": 180,
+        "step": 5,
+        "unit": "rpm"
+      },
+      {
+        "id": "d_pin",
+        "label": "Pin Diameter",
+        "symbol": "d_p",
+        "value": 0.018,
+        "min": 0.012,
+        "max": 0.024,
+        "step": 0.002,
+        "unit": "m"
+      }
+    ],
+    "parts": [
+      {
+        "id": "frame",
+        "name": "Base and Guide Frame",
+        "material": "castIron",
+        "role": "housing",
+        "position": [
+          0,
+          -0.08,
+          -0.04
+        ],
+        "explode": [
+          0,
+          -0.1,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Rigid machine base with central bearing pedestal and horizontal guide bushings.",
+          "role": "Anchors the crank bearing and constrains yoke motion to pure horizontal translation."
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              0,
+              -0.06,
+              0.04
+            ],
+            "sx": 0.44,
+            "sy": 0.025,
+            "sz": 0.16
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0.08,
+              0
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.045,
+            "h": 0.07
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              0.02,
+              0
+            ],
+            "sx": 0.07,
+            "sy": 0.08,
+            "sz": 0.07
+          },
+          {
+            "kind": "box",
+            "position": [
+              -0.17,
+              0.08,
+              0.04
+            ],
+            "sx": 0.05,
+            "sy": 0.06,
+            "sz": 0.06
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              -0.17,
+              0.08,
+              0.04
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.012,
+            "h": 0.06
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.17,
+              0.08,
+              0.04
+            ],
+            "sx": 0.05,
+            "sy": 0.06,
+            "sz": 0.06
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              0.17,
+              0.08,
+              0.04
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.012,
+            "h": 0.06
+          }
+        ]
+      },
+      {
+        "id": "crank",
+        "name": "Crank Disc & Pin",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          -0.12
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Counterweighted crank disc with an eccentric crank pin at radius r.",
+          "role": "Provides uniform rotational input that drives the slider block inside the yoke slot."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "z",
+          "speed": "rpm / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "frame",
+          "offset": 0.035
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              -0.045
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.016,
+            "h": 0.09
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              0.008
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": "r + 0.022",
+            "h": 0.016
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              "r",
+              0.032
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": "d_pin / 2",
+            "h": 0.032
+          }
+        ]
+      },
+      {
+        "id": "slider_block",
+        "name": "Slider Block",
+        "material": "bronze",
+        "role": "moving",
+        "explode": [
+          0,
+          0.08,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Bronze bearing block journalled on the crank pin.",
+          "role": "Transmits force to the vertical faces of the yoke slot while freely sliding along it."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "z",
+          "speed": "rpm / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "crank",
+          "at": 1,
+          "offset": -0.01
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": 0.032,
+            "sy": 0.032,
+            "sz": 0.02
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": "d_pin / 2",
+            "h": 0.022
+          }
+        ]
+      },
+      {
+        "id": "yoke",
+        "name": "Scotch Yoke Crosshead",
+        "material": "forged",
+        "role": "moving",
+        "explode": [
+          0.12,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Slotted crosshead with twin horizontal guide shafts.",
+          "role": "Converts the rotational displacement into exact sinusoidal linear output along its guides."
+        },
+        "motion": {
+          "kind": "oscillate",
+          "axis": "x",
+          "speed": "rpm / 60",
+          "amplitude": "r"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "frame",
+          "face": "+y",
+          "shift": [
+            0,
+            0.08,
+            0.04
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "sx": 0.065,
+            "sy": "2 * r + 0.075",
+            "sz": 0.026
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "sx": 0.033,
+            "sy": "2 * r + 0.034",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              -0.11,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.011,
+            "h": 0.16
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0.11,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.011,
+            "h": 0.16
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "stroke_dim",
+        "kind": "dimension",
+        "label": "Stroke",
+        "magnitude": "stroke",
+        "unit": "m",
+        "anchor": {
+          "part": "yoke",
+          "at": "+y"
+        }
+      },
+      {
+        "id": "torque_in",
+        "kind": "moment",
+        "label": "T_in",
+        "anchor": {
+          "part": "crank",
+          "at": "start"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "stroke",
+        "label": "Total Stroke",
+        "symbol": "S",
+        "formula": "2 * r",
+        "unit": "m",
+        "latex": "S = 2r"
+      },
+      {
+        "id": "omega",
+        "label": "Angular Velocity",
+        "symbol": "\\omega",
+        "formula": "2 * pi * rpm / 60",
+        "unit": "rad/s",
+        "latex": "\\omega = \\frac{2\\pi n}{60}"
+      },
+      {
+        "id": "v_max",
+        "label": "Peak Linear Velocity",
+        "symbol": "v_{\\max}",
+        "formula": "omega * r",
+        "unit": "m/s",
+        "latex": "v_{\\max} = \\omega r"
+      },
+      {
+        "id": "a_max",
+        "label": "Peak Acceleration",
+        "symbol": "a_{\\max}",
+        "formula": "omega^2 * r",
+        "unit": "m/s^2",
+        "latex": "a_{\\max} = \\omega^2 r"
+      }
+    ],
+    "charts": [
+      {
+        "id": "kinematics",
+        "title": "Scotch Yoke Displacement & Velocity vs Crank Angle",
+        "x": {
+          "label": "Crank Angle",
+          "unit": "rad",
+          "from": "0",
+          "to": "2 * pi"
+        },
+        "y": {
+          "label": "Displacement & Norm. Velocity",
+          "unit": "m"
+        },
+        "series": [
+          {
+            "id": "disp",
+            "label": "Displacement x(\\theta) [m]",
+            "formula": "r * cos(x)"
+          },
+          {
+            "id": "vel",
+            "label": "Velocity v/\\omega [m]",
+            "formula": "-r * sin(x)"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.45,
+        0.32,
+        0.55
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "extent": 0.55,
+    "floorY": -0.22,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0.01
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

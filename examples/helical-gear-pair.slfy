@@ -1,0 +1,520 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "helical-gear-pair",
+    "title": "Helical Gear Pair on Parallel Shafts",
+    "summary": "Single-stage parallel-shaft helical gear pair with 25-tooth pinion and 50-tooth gear showing pitch geometry, center distance, and axial thrust generation.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "z1",
+        "label": "Pinion teeth",
+        "symbol": "z_1",
+        "value": 25,
+        "min": 15,
+        "max": 35,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "z2",
+        "label": "Wheel teeth",
+        "symbol": "z_2",
+        "value": 50,
+        "min": 30,
+        "max": 80,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "mn",
+        "label": "Normal module",
+        "symbol": "m_n",
+        "value": 3,
+        "min": 2,
+        "max": 5,
+        "step": 0.5,
+        "unit": "mm"
+      },
+      {
+        "id": "beta",
+        "label": "Helix angle",
+        "symbol": "\\beta",
+        "value": 20,
+        "min": 10,
+        "max": 35,
+        "step": 1,
+        "unit": "deg"
+      },
+      {
+        "id": "b",
+        "label": "Face width",
+        "symbol": "b",
+        "value": 40,
+        "min": 25,
+        "max": 60,
+        "step": 5,
+        "unit": "mm"
+      },
+      {
+        "id": "rpm1",
+        "label": "Pinion speed",
+        "symbol": "n_1",
+        "value": 1200,
+        "min": 300,
+        "max": 3000,
+        "step": 100,
+        "unit": "rpm"
+      },
+      {
+        "id": "power",
+        "label": "Transmitted power",
+        "symbol": "P",
+        "value": 7.5,
+        "min": 1,
+        "max": 20,
+        "step": 0.5,
+        "unit": "kW"
+      }
+    ],
+    "parts": [
+      {
+        "id": "mounting_base",
+        "name": "Gearbox Base Plate",
+        "material": "castIron",
+        "role": "housing",
+        "position": [
+          0.06,
+          -0.16,
+          0
+        ],
+        "explode": [
+          0,
+          -0.08,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Rigid cast iron base plate with bearing pedestals.",
+          "role": "Maintains shaft center distance and supports bearing reaction loads."
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": 0.38,
+            "sy": 0.024,
+            "sz": 0.28
+          },
+          {
+            "kind": "box",
+            "position": [
+              -0.06,
+              0.06,
+              0.09
+            ],
+            "sx": 0.04,
+            "sy": 0.12,
+            "sz": 0.04
+          },
+          {
+            "kind": "box",
+            "position": [
+              -0.06,
+              0.06,
+              -0.09
+            ],
+            "sx": 0.04,
+            "sy": 0.12,
+            "sz": 0.04
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.18,
+              0.06,
+              0.09
+            ],
+            "sx": 0.04,
+            "sy": 0.12,
+            "sz": 0.04
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.18,
+              0.06,
+              -0.09
+            ],
+            "sx": 0.04,
+            "sy": 0.12,
+            "sz": 0.04
+          }
+        ]
+      },
+      {
+        "id": "pinion_shaft",
+        "name": "Input Shaft",
+        "material": "steel",
+        "role": "moving",
+        "rotation": [
+          1.5708,
+          0,
+          0
+        ],
+        "explode": [
+          0,
+          0,
+          -0.12
+        ],
+        "cut": false,
+        "info": {
+          "summary": "High-strength alloy steel input drive shaft.",
+          "role": "Transmits input torque and accommodates radial and axial bearing reactions."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "rpm1 / 60"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "mounting_base",
+          "face": "+y",
+          "shift": [
+            -0.12,
+            0.16,
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.014,
+            "h": 0.24
+          },
+          {
+            "kind": "cylinder",
+            "r": 0.018,
+            "h": 0.06
+          }
+        ]
+      },
+      {
+        "id": "pinion",
+        "name": "Helical Pinion (25T)",
+        "material": "forged",
+        "role": "moving",
+        "explode": [
+          0,
+          0.08,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Case-hardened 25-tooth right-hand helical pinion.",
+          "role": "Drives the mating wheel with smooth progressive tooth engagement along the helix."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "rpm1 / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "pinion_shaft",
+          "at": 0.5
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rInner": 0.014,
+            "h": "b * 0.001",
+            "teeth": "z1",
+            "module": "mt * 0.001",
+            "helixAngle": "beta"
+          }
+        ]
+      },
+      {
+        "id": "driven_gear",
+        "name": "Helical Wheel (50T)",
+        "material": "steelMatte",
+        "role": "moving",
+        "explode": [
+          0,
+          -0.08,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "50-tooth left-hand helical gear wheel.",
+          "role": "Receives torque from the pinion at reduced speed and opposite axial thrust."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "-rpm1 / (60 * u)"
+        },
+        "mount": {
+          "kind": "mesh",
+          "target": "pinion",
+          "side": "+x"
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rInner": 0.02,
+            "h": "b * 0.001",
+            "teeth": "z2",
+            "module": "mt * 0.001",
+            "helixAngle": "-beta"
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "r": "0.0005 * d2 - 0.012",
+            "h": "b * 0.001 * 0.4"
+          }
+        ]
+      },
+      {
+        "id": "output_shaft",
+        "name": "Output Shaft",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.12
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Heavy-duty parallel output shaft.",
+          "role": "Delivers multiplied torque to the load system."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "-rpm1 / (60 * u)"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "driven_gear",
+          "at": 0.5
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.02,
+            "h": 0.24
+          },
+          {
+            "kind": "cylinder",
+            "r": 0.024,
+            "h": "b * 0.001 + 0.01"
+          }
+        ]
+      },
+      {
+        "id": "bearings",
+        "name": "Tapered Roller Bearings",
+        "material": "bearing",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          -0.06
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Angular contact / tapered roller bearing pairs.",
+          "role": "Reacts combined radial loads and axial thrust induced by helical teeth."
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "pinion_shaft",
+          "at": 0.15
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "rOuter": 0.028,
+            "rInner": 0.014,
+            "h": 0.022
+          },
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              0.14,
+              0
+            ],
+            "rOuter": 0.028,
+            "rInner": 0.014,
+            "h": 0.022
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "ann_torque",
+        "kind": "moment",
+        "label": "T_1",
+        "magnitude": "T1",
+        "unit": "N·m",
+        "anchor": {
+          "part": "pinion_shaft",
+          "at": "start"
+        }
+      },
+      {
+        "id": "ann_thrust",
+        "kind": "force",
+        "label": "F_a",
+        "magnitude": "Fa",
+        "unit": "N",
+        "anchor": {
+          "part": "pinion",
+          "at": "+x"
+        },
+        "direction": "+y",
+        "length": 0.1
+      },
+      {
+        "id": "ann_tangential",
+        "kind": "force",
+        "label": "F_t",
+        "magnitude": "Ft",
+        "unit": "N",
+        "anchor": {
+          "part": "pinion",
+          "at": "+x"
+        },
+        "direction": "+z",
+        "length": 0.12
+      }
+    ],
+    "calculations": [
+      {
+        "id": "u",
+        "label": "Gear ratio",
+        "symbol": "u",
+        "formula": "z2 / z1",
+        "unit": "",
+        "latex": "u = \\frac{z_2}{z_1}"
+      },
+      {
+        "id": "mt",
+        "label": "Transverse module",
+        "symbol": "m_t",
+        "formula": "mn / cos(beta * pi / 180)",
+        "unit": "mm",
+        "latex": "m_t = \\frac{m_n}{\\cos\\beta}"
+      },
+      {
+        "id": "d1",
+        "label": "Pinion pitch diameter",
+        "symbol": "d_1",
+        "formula": "z1 * mt",
+        "unit": "mm",
+        "latex": "d_1 = z_1 m_t"
+      },
+      {
+        "id": "d2",
+        "label": "Wheel pitch diameter",
+        "symbol": "d_2",
+        "formula": "z2 * mt",
+        "unit": "mm",
+        "latex": "d_2 = z_2 m_t"
+      },
+      {
+        "id": "a",
+        "label": "Center distance",
+        "symbol": "a",
+        "formula": "(d1 + d2) / 2",
+        "unit": "mm",
+        "latex": "a = \\frac{d_1 + d_2}{2}"
+      },
+      {
+        "id": "T1",
+        "label": "Pinion torque",
+        "symbol": "T_1",
+        "formula": "power * 1000 / (2 * pi * rpm1 / 60)",
+        "unit": "N·m",
+        "latex": "T_1 = \\frac{P}{\\omega_1}"
+      },
+      {
+        "id": "Ft",
+        "label": "Tangential tooth force",
+        "symbol": "F_t",
+        "formula": "2000 * T1 / d1",
+        "unit": "N",
+        "latex": "F_t = \\frac{2 T_1}{d_1}"
+      },
+      {
+        "id": "Fa",
+        "label": "Axial thrust force",
+        "symbol": "F_a",
+        "formula": "Ft * tan(beta * pi / 180)",
+        "unit": "N",
+        "latex": "F_a = F_t \\tan\\beta"
+      }
+    ],
+    "charts": [
+      {
+        "id": "thrust_vs_beta",
+        "title": "Axial Thrust Force vs Helix Angle",
+        "x": {
+          "label": "Helix angle β",
+          "unit": "deg",
+          "from": "10",
+          "to": "35"
+        },
+        "y": {
+          "label": "Thrust Force Fa",
+          "unit": "N"
+        },
+        "series": [
+          {
+            "id": "fa_curve",
+            "label": "Axial Force Fa(β)",
+            "formula": "Ft * tan(x * pi / 180)"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.45,
+        0.35,
+        0.48
+      ],
+      "target": [
+        0.06,
+        0.02,
+        0
+      ]
+    },
+    "extent": 0.55,
+    "floorY": -0.22,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0.01
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

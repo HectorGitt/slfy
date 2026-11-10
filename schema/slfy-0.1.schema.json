@@ -1,0 +1,1218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "title": "Solidify model file (.slfy) 0.1",
+  "description": "A 3D engineering model that moves and calculates: parameters, parts placed by relation, motion, annotations, live calculations, charts and the question it answers. See format/SPEC.md.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "format": {
+      "type": "string",
+      "const": "slfy"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "units": {
+          "type": "string",
+          "enum": [
+            "mm",
+            "m"
+          ],
+          "description": "the unit sliders show sizes in; geometry is always in metres"
+        },
+        "question": {
+          "description": "a problem being solved: its givens are the parameters, its worked solution the calculations, in order",
+          "$ref": "#/$defs/__schema0"
+        },
+        "parameters": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema2"
+          }
+        },
+        "parts": {
+          "minItems": 1,
+          "maxItems": 32,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema3"
+          }
+        },
+        "annotations": {
+          "maxItems": 24,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema10"
+          }
+        },
+        "calculations": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema11"
+          }
+        },
+        "charts": {
+          "maxItems": 6,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema12"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "summary",
+        "units",
+        "parameters",
+        "parts"
+      ],
+      "additionalProperties": false
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "camera": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "$ref": "#/$defs/__schema14"
+            },
+            "target": {
+              "$ref": "#/$defs/__schema14"
+            }
+          },
+          "required": [
+            "position",
+            "target"
+          ],
+          "additionalProperties": false
+        },
+        "extent": {
+          "description": "the size of the scene in metres, for framing and the floor grid",
+          "$ref": "#/$defs/__schema15"
+        },
+        "floorY": {
+          "description": "height of the floor, metres",
+          "$ref": "#/$defs/__schema16"
+        },
+        "cut": {
+          "description": "the cut-away the model opens with",
+          "$ref": "#/$defs/__schema17"
+        },
+        "projectionPlanes": {
+          "type": "string",
+          "enum": [
+            "none",
+            "first-angle",
+            "third-angle"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "generator": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "created": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 400
+        }
+      },
+      "additionalProperties": false
+    },
+    "extensions": {
+      "description": "namespaced additions (\"vendor.feature\"); readers ignore what they do not know",
+      "$ref": "#/$defs/__schema18"
+    }
+  },
+  "required": [
+    "format",
+    "version",
+    "model"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "find": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema1"
+          }
+        },
+        "symbolic": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "find"
+      ],
+      "additionalProperties": false
+    },
+    "__schema1": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "__schema2": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "value": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 24
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "value",
+        "min",
+        "max",
+        "step",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "__schema3": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "material": {
+          "type": "string",
+          "enum": [
+            "castIron",
+            "steel",
+            "steelMatte",
+            "steelDark",
+            "chrome",
+            "forged",
+            "aluminium",
+            "bronze",
+            "brass",
+            "copper",
+            "bearing",
+            "rubber",
+            "friction",
+            "gasket",
+            "ceramic",
+            "plastic",
+            "wood",
+            "paintGreen",
+            "paintYellow",
+            "paintRed",
+            "paintGrey",
+            "paintBlack",
+            "paintBlue",
+            "paintOrange",
+            "galvanised",
+            "leather",
+            "nylon",
+            "concrete",
+            "crop",
+            "straw",
+            "glass",
+            "oil",
+            "hydraulicOil",
+            "coolant",
+            "fuel",
+            "water",
+            "soil",
+            "grain"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "housing",
+            "moving",
+            "fluid",
+            "static"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "rotation": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "explode": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "cut": {
+          "type": "boolean"
+        },
+        "info": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "role": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        "motion": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "rotate",
+                "oscillate",
+                "translate"
+              ]
+            },
+            "axis": {
+              "type": "string",
+              "enum": [
+                "x",
+                "y",
+                "z"
+              ]
+            },
+            "speed": {
+              "$ref": "#/$defs/__schema5"
+            },
+            "amplitude": {
+              "$ref": "#/$defs/__schema5"
+            },
+            "phase": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "kind",
+            "axis",
+            "speed"
+          ],
+          "additionalProperties": false
+        },
+        "mount": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "coaxial"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "at": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "offset": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "mesh"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "side": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "against"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "face": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "face"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "centered"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "slider"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "throw": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "rod": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "direction": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "throw",
+                "rod"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "link"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "to": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "throw": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "direction": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "to",
+                "throw"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "lever"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "pivot": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "throw": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "direction": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "pivot",
+                "throw"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "follower"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "direction": {
+                  "$ref": "#/$defs/__schema6"
+                },
+                "of": {
+                  "type": "string",
+                  "enum": [
+                    "pin",
+                    "tip"
+                  ]
+                },
+                "throw": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "offset": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "direction"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "hooke"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target",
+                "angle"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "shapes": {
+          "minItems": 1,
+          "maxItems": 32,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema7"
+          }
+        },
+        "children": {
+          "maxItems": 24,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema3"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "shapes"
+      ],
+      "additionalProperties": false
+    },
+    "__schema4": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/__schema5"
+        },
+        {
+          "$ref": "#/$defs/__schema5"
+        },
+        {
+          "$ref": "#/$defs/__schema5"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "__schema5": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "maxLength": 120
+        }
+      ]
+    },
+    "__schema6": {
+      "type": "string",
+      "enum": [
+        "+x",
+        "-x",
+        "+y",
+        "-y",
+        "+z",
+        "-z"
+      ]
+    },
+    "__schema7": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "box",
+            "cylinder",
+            "tube",
+            "cone",
+            "sphere",
+            "torus",
+            "lathe",
+            "extrude",
+            "gear",
+            "bevelGear",
+            "rack",
+            "pulley",
+            "sprocket",
+            "spring",
+            "hexNut",
+            "hexBolt"
+          ]
+        },
+        "op": {
+          "type": "string",
+          "enum": [
+            "add",
+            "subtract",
+            "intersect"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "rotation": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "radialCount": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "radialRadius": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "sx": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "sy": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "sz": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "r": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "rTop": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "rBot": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "rOuter": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "rInner": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "h": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "tubeRadius": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "teeth": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "module": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "pressureAngle": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "helixAngle": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "pitch": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "d": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "turns": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "wireRadius": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "profile": {
+          "maxItems": 64,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema8"
+          }
+        },
+        "polygon": {
+          "maxItems": 64,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema9"
+          }
+        },
+        "depth": {
+          "$ref": "#/$defs/__schema5"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "__schema8": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/__schema5"
+        },
+        {
+          "$ref": "#/$defs/__schema5"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "__schema9": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/__schema5"
+        },
+        {
+          "$ref": "#/$defs/__schema5"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "__schema10": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "force",
+            "moment",
+            "dimension",
+            "label"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "magnitude": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "anchor": {
+          "type": "object",
+          "properties": {
+            "part": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "at": {
+              "type": "string",
+              "enum": [
+                "+x",
+                "-x",
+                "+y",
+                "-y",
+                "+z",
+                "-z",
+                "center",
+                "start",
+                "end"
+              ]
+            },
+            "along": {
+              "$ref": "#/$defs/__schema5"
+            }
+          },
+          "required": [
+            "part"
+          ],
+          "additionalProperties": false
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "+x",
+            "-x",
+            "+y",
+            "-y",
+            "+z",
+            "-z"
+          ]
+        },
+        "length": {
+          "$ref": "#/$defs/__schema5"
+        },
+        "from": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "to": {
+          "$ref": "#/$defs/__schema4"
+        },
+        "color": {
+          "type": "string",
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "__schema11": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "formula": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "latex": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "step": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "answer": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "max",
+                "min"
+              ]
+            },
+            "value": {
+              "$ref": "#/$defs/__schema5"
+            },
+            "label": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "symbol",
+        "formula",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "__schema12": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "x": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "from": {
+              "$ref": "#/$defs/__schema5"
+            },
+            "to": {
+              "$ref": "#/$defs/__schema5"
+            }
+          },
+          "required": [
+            "label",
+            "unit",
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        },
+        "y": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 20
+            }
+          },
+          "required": [
+            "label",
+            "unit"
+          ],
+          "additionalProperties": false
+        },
+        "series": {
+          "minItems": 1,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/__schema13"
+          }
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 400
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "x",
+        "y",
+        "series"
+      ],
+      "additionalProperties": false
+    },
+    "__schema13": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "formula": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "formula"
+      ],
+      "additionalProperties": false
+    },
+    "__schema14": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "__schema15": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "__schema16": {
+      "type": "number"
+    },
+    "__schema17": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "normal": {
+          "$ref": "#/$defs/__schema14"
+        },
+        "pos": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled",
+        "normal",
+        "pos"
+      ],
+      "additionalProperties": false
+    },
+    "__schema18": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {}
+    }
+  }
+}

@@ -1,0 +1,873 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "quick-return-mechanism",
+    "title": "Crank & Slotted-Lever Quick-Return Mechanism",
+    "summary": "Whitworth crank and slotted-lever drive for a metal shaper. Constant-speed rotation of the bull gear drives a sliding block within the slotted rocker, producing a slow forward cutting stroke and a rapid return stroke.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "r",
+        "label": "Crank Radius",
+        "symbol": "r",
+        "value": 0.065,
+        "min": 0.04,
+        "max": 0.095,
+        "step": 0.005,
+        "unit": "m"
+      },
+      {
+        "id": "c",
+        "label": "Pivot Centre Distance",
+        "symbol": "c",
+        "value": 0.17,
+        "min": 0.13,
+        "max": 0.22,
+        "step": 0.005,
+        "unit": "m"
+      },
+      {
+        "id": "L_lever",
+        "label": "Rocker Arm Length",
+        "symbol": "L",
+        "value": 0.36,
+        "min": 0.28,
+        "max": 0.44,
+        "step": 0.01,
+        "unit": "m"
+      },
+      {
+        "id": "L_link",
+        "label": "Drag Link Length",
+        "symbol": "l_d",
+        "value": 0.11,
+        "min": 0.08,
+        "max": 0.16,
+        "step": 0.005,
+        "unit": "m"
+      },
+      {
+        "id": "speed",
+        "label": "Bull Gear Speed",
+        "symbol": "n",
+        "value": 30,
+        "min": 10,
+        "max": 60,
+        "step": 5,
+        "unit": "rpm"
+      },
+      {
+        "id": "F_cut",
+        "label": "Cutting Resistance",
+        "symbol": "F_c",
+        "value": 1500,
+        "min": 500,
+        "max": 3500,
+        "step": 100,
+        "unit": "N"
+      }
+    ],
+    "parts": [
+      {
+        "id": "frame",
+        "name": "Shaper Column & Guideway",
+        "material": "castIron",
+        "role": "housing",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "explode": [
+          -0.14,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Heavy cast-iron column of the shaping machine",
+          "role": "Anchors the bull gear spindle bearing, supports the lower rocker pivot pin, and provides top horizontal dovetail guideways for the reciprocating ram."
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              -0.08,
+              0,
+              -0.15
+            ],
+            "sx": 0.32,
+            "sy": 0.52,
+            "sz": 0.22
+          },
+          {
+            "kind": "box",
+            "position": [
+              -0.04,
+              -0.24,
+              -0.06
+            ],
+            "sx": 0.44,
+            "sy": 0.05,
+            "sz": 0.38
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.04,
+              0.22,
+              -0.04
+            ],
+            "sx": 0.46,
+            "sy": 0.06,
+            "sz": 0.18
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0.06,
+              0,
+              -0.04
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.052,
+            "h": 0.08
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0.06,
+              "-c",
+              0.01
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.034,
+            "h": 0.07
+          }
+        ]
+      },
+      {
+        "id": "bull_gear",
+        "name": "Bull Gear Crank Disc",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.12
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Precision spur bull gear with radial crank pin guide",
+          "role": "Rotates at uniform speed to orbit the adjustable crank pin, driving the sliding block back and forth inside the rocker arm."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "z",
+          "speed": "speed / 60"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "frame",
+          "face": "+z",
+          "shift": [
+            0.06,
+            0,
+            0.01
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "rInner": 0.024,
+            "h": 0.026,
+            "teeth": 38,
+            "module": 0.0055
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              0.015
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.085,
+            "h": 0.008
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              "r",
+              0.024
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.014,
+            "h": 0.032
+          }
+        ]
+      },
+      {
+        "id": "sliding_block",
+        "name": "Crank Slide Die Block",
+        "material": "bronze",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.14
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Phosphor-bronze crank sliding block",
+          "role": "Rotates freely on the bull gear crank pin while sliding within the rocker arm slot to convert uniform rotation into quick-return oscillation."
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "bull_gear",
+          "shift": [
+            0,
+            "r",
+            0.024
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": 0.044,
+            "sy": 0.042,
+            "sz": 0.024
+          },
+          {
+            "kind": "tube",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "rOuter": 0.02,
+            "rInner": 0.014,
+            "h": 0.026
+          }
+        ]
+      },
+      {
+        "id": "slotted_lever",
+        "name": "Slotted Rocker Lever",
+        "material": "forged",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.16
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Long oscillating slotted arm pivoted at base",
+          "role": "Driven by the crank slide block through an angle 2φ, producing a slow cutting stroke and rapid non-cutting return."
+        },
+        "motion": {
+          "kind": "oscillate",
+          "axis": "z",
+          "speed": "speed / 60",
+          "amplitude": "asin(r / c) * 180 / pi"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "frame",
+          "face": "+z",
+          "shift": [
+            0.06,
+            "-c",
+            0.038
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.028,
+            "h": 0.032
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              -0.02
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.016,
+            "h": 0.04
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              "L_lever / 2",
+              0
+            ],
+            "sx": 0.054,
+            "sy": "L_lever",
+            "sz": 0.026
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              0,
+              "c",
+              0
+            ],
+            "sx": 0.044,
+            "sy": "2 * r + 0.06",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              "L_lever",
+              0
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.022,
+            "h": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              "L_lever",
+              0.01
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.012,
+            "h": 0.046
+          }
+        ]
+      },
+      {
+        "id": "connecting_link",
+        "name": "Drag Link",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0,
+          0.08,
+          0.08
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Short connecting link between rocker top and ram",
+          "role": "Accommodates the slight vertical arc of the rocker arm tip while transmitting horizontal cutting force directly into the ram."
+        },
+        "motion": {
+          "kind": "oscillate",
+          "axis": "x",
+          "speed": "speed / 60",
+          "amplitude": "stroke / 2"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "slotted_lever",
+          "shift": [
+            "L_link / 2",
+            "L_lever",
+            0.026
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": "L_link",
+            "sy": 0.024,
+            "sz": 0.018
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              "-L_link / 2",
+              0,
+              0
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.018,
+            "h": 0.022
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              "L_link / 2",
+              0,
+              0
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.018,
+            "h": 0.022
+          }
+        ]
+      },
+      {
+        "id": "ram",
+        "name": "Shaper Ram",
+        "material": "castIron",
+        "role": "moving",
+        "explode": [
+          0,
+          0.12,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Rigid reciprocating ram sliding on top guideways",
+          "role": "Translates horizontally to carry the tool head across the workpiece and absorb high cutting thrust."
+        },
+        "motion": {
+          "kind": "oscillate",
+          "axis": "x",
+          "speed": "speed / 60",
+          "amplitude": "stroke / 2"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "frame",
+          "face": "+y",
+          "shift": [
+            0.08,
+            0.026,
+            0.01
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "sx": 0.48,
+            "sy": 0.065,
+            "sz": 0.14
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              -0.038,
+              0
+            ],
+            "sx": 0.48,
+            "sy": 0.018,
+            "sz": 0.11
+          },
+          {
+            "kind": "box",
+            "position": [
+              "-0.12 + L_link / 2",
+              -0.04,
+              0.05
+            ],
+            "sx": 0.036,
+            "sy": 0.046,
+            "sz": 0.034
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0.048,
+              0
+            ],
+            "r": 0.016,
+            "h": 0.044
+          }
+        ]
+      },
+      {
+        "id": "tool_head",
+        "name": "Tool Head & Clapper Box",
+        "material": "steelDark",
+        "role": "moving",
+        "explode": [
+          0.12,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Swivelling clapper box and downfeed tool slide",
+          "role": "Clamps the single-point cutting tool; swivels outward on the return stroke to prevent tool wear and workpiece scoring."
+        },
+        "motion": {
+          "kind": "oscillate",
+          "axis": "x",
+          "speed": "speed / 60",
+          "amplitude": "stroke / 2"
+        },
+        "mount": {
+          "kind": "against",
+          "target": "ram",
+          "face": "+x",
+          "shift": [
+            0.02,
+            -0.02,
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "sx": 0.03,
+            "sy": 0.12,
+            "sz": 0.08
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0.022,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.036,
+            "h": 0.018
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.038,
+              -0.02,
+              0
+            ],
+            "sx": 0.032,
+            "sy": 0.06,
+            "sz": 0.05
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.056,
+              -0.03,
+              0
+            ],
+            "sx": 0.024,
+            "sy": 0.04,
+            "sz": 0.024
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.056,
+              -0.068,
+              0
+            ],
+            "sx": 0.014,
+            "sy": 0.052,
+            "sz": 0.014
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0.014,
+              0.072,
+              0
+            ],
+            "r": 0.02,
+            "h": 0.012
+          }
+        ]
+      },
+      {
+        "id": "work_table",
+        "name": "Worktable & Machine Vise",
+        "material": "castIron",
+        "role": "housing",
+        "explode": [
+          0,
+          -0.1,
+          0.08
+        ],
+        "cut": false,
+        "info": {
+          "summary": "T-slotted table and knee assembly with machine vise",
+          "role": "Supports and clamps the workpiece directly beneath the cutting tool path."
+        },
+        "mount": {
+          "kind": "against",
+          "target": "frame",
+          "face": "+x",
+          "shift": [
+            0.09,
+            -0.11,
+            0.01
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "sx": 0.16,
+            "sy": 0.2,
+            "sz": 0.16
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.01,
+              0.1,
+              0
+            ],
+            "sx": 0.18,
+            "sy": 0.035,
+            "sz": 0.16
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.01,
+              0.134,
+              0
+            ],
+            "sx": 0.12,
+            "sy": 0.034,
+            "sz": 0.1
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.01,
+              0.162,
+              0
+            ],
+            "sx": 0.09,
+            "sy": 0.024,
+            "sz": 0.06
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "stroke_dim",
+        "kind": "dimension",
+        "label": "Stroke S",
+        "magnitude": "stroke",
+        "unit": "m",
+        "anchor": {
+          "part": "ram",
+          "at": "+y"
+        }
+      },
+      {
+        "id": "cutting_force",
+        "kind": "force",
+        "label": "F_c",
+        "magnitude": "F_cut",
+        "unit": "N",
+        "anchor": {
+          "part": "tool_head",
+          "at": "+x"
+        },
+        "direction": "-x",
+        "length": 0.12
+      },
+      {
+        "id": "crank_torque",
+        "kind": "moment",
+        "label": "T_in",
+        "magnitude": "F_cut * r",
+        "unit": "N·m",
+        "anchor": {
+          "part": "bull_gear",
+          "at": "center"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "phi_deg",
+        "label": "Lever Swing Half-Angle",
+        "symbol": "φ",
+        "formula": "asin(r / c) * 180 / pi",
+        "unit": "deg"
+      },
+      {
+        "id": "qrr",
+        "label": "Quick-Return Ratio",
+        "symbol": "QRR",
+        "formula": "(180 + 2 * asin(r / c) * 180 / pi) / (180 - 2 * asin(r / c) * 180 / pi)",
+        "unit": ""
+      },
+      {
+        "id": "stroke",
+        "label": "Ram Stroke Length",
+        "symbol": "S",
+        "formula": "2 * L_lever * (r / c)",
+        "unit": "m"
+      },
+      {
+        "id": "v_cut_avg",
+        "label": "Mean Cutting Speed",
+        "symbol": "V_cut",
+        "formula": "(2 * L_lever * (r / c)) / ((180 + 2 * asin(r / c) * 180 / pi) / 360 * (60 / speed))",
+        "unit": "m/s"
+      },
+      {
+        "id": "v_ret_avg",
+        "label": "Mean Return Speed",
+        "symbol": "V_ret",
+        "formula": "(2 * L_lever * (r / c)) / ((180 - 2 * asin(r / c) * 180 / pi) / 360 * (60 / speed))",
+        "unit": "m/s"
+      },
+      {
+        "id": "P_cut",
+        "label": "Cutting Power",
+        "symbol": "P",
+        "formula": "F_cut * ((2 * L_lever * (r / c)) / ((180 + 2 * asin(r / c) * 180 / pi) / 360 * (60 / speed))) / 1000",
+        "unit": "kW"
+      }
+    ],
+    "charts": [
+      {
+        "id": "velocity_diagram",
+        "title": "Ram Linear Velocity vs Crank Angle",
+        "x": {
+          "label": "Crank Angle",
+          "unit": "deg",
+          "from": "0",
+          "to": "360"
+        },
+        "y": {
+          "label": "Ram Velocity",
+          "unit": "m/s"
+        },
+        "series": [
+          {
+            "id": "v_ram",
+            "label": "Velocity v(θ)",
+            "formula": "2 * pi * (speed / 60) * r * (L_lever / c) * sin(x * pi / 180) / (1 - (r / c) * cos(x * pi / 180))^1.5"
+          }
+        ]
+      },
+      {
+        "id": "displacement_diagram",
+        "title": "Ram Position vs Crank Angle",
+        "x": {
+          "label": "Crank Angle",
+          "unit": "deg",
+          "from": "0",
+          "to": "360"
+        },
+        "y": {
+          "label": "Displacement",
+          "unit": "m"
+        },
+        "series": [
+          {
+            "id": "s_ram",
+            "label": "Displacement s(θ)",
+            "formula": "(stroke / 2) * (1 - cos(x * pi / 180 - asin(r / c) * sin(x * pi / 180)))"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.55,
+        0.32,
+        0.62
+      ],
+      "target": [
+        0.06,
+        0.02,
+        0.02
+      ]
+    },
+    "extent": 0.6,
+    "floorY": -0.26,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

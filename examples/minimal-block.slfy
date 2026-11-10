@@ -1,0 +1,93 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "minimal-block",
+    "title": "A block on a plate",
+    "summary": "The smallest useful model: two parts, one placed against the other.",
+    "units": "mm",
+    "parameters": [],
+    "parts": [
+      {
+        "id": "plate",
+        "name": "Base plate",
+        "material": "steelMatte",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "info": {
+          "summary": "A flat steel plate the block sits on."
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": 0.3,
+            "sy": 0.02,
+            "sz": 0.2
+          }
+        ]
+      },
+      {
+        "id": "block",
+        "name": "Block",
+        "material": "paintGreen",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "info": {
+          "summary": "A block placed on top of the plate by relation, not by coordinates."
+        },
+        "mount": {
+          "kind": "against",
+          "target": "plate",
+          "face": "+y"
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": 0.1,
+            "sy": 0.08,
+            "sz": 0.1
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.35,
+        0.25,
+        0.4
+      ],
+      "target": [
+        0,
+        0.03,
+        0
+      ]
+    },
+    "extent": 0.35,
+    "floorY": -0.01,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

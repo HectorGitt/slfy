@@ -1,0 +1,453 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "muff-coupling",
+    "title": "Rigid Sleeve (Muff) Coupling",
+    "summary": "A rigid sleeve coupling connecting two collinear 30 mm shafts via a solid cast iron sleeve and a sunk key, featuring torsional shear and crushing stress analyses.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "d",
+        "label": "Shaft diameter",
+        "symbol": "d",
+        "value": 30,
+        "min": 20,
+        "max": 50,
+        "step": 2,
+        "unit": "mm"
+      },
+      {
+        "id": "T",
+        "label": "Transmitted torque",
+        "symbol": "T",
+        "value": 150,
+        "min": 20,
+        "max": 400,
+        "step": 10,
+        "unit": "N·m"
+      },
+      {
+        "id": "L_sleeve",
+        "label": "Sleeve length",
+        "symbol": "L",
+        "value": 105,
+        "min": 70,
+        "max": 160,
+        "step": 5,
+        "unit": "mm"
+      },
+      {
+        "id": "D_outer",
+        "label": "Sleeve outer diameter",
+        "symbol": "D",
+        "value": 72,
+        "min": 50,
+        "max": 110,
+        "step": 2,
+        "unit": "mm"
+      },
+      {
+        "id": "w_key",
+        "label": "Key width",
+        "symbol": "w",
+        "value": 8,
+        "min": 6,
+        "max": 14,
+        "step": 1,
+        "unit": "mm"
+      },
+      {
+        "id": "h_key",
+        "label": "Key height",
+        "symbol": "h",
+        "value": 7,
+        "min": 5,
+        "max": 12,
+        "step": 1,
+        "unit": "mm"
+      }
+    ],
+    "parts": [
+      {
+        "id": "sleeve",
+        "name": "Cast iron sleeve",
+        "material": "castIron",
+        "role": "housing",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          1.5708
+        ],
+        "explode": [
+          0,
+          0.08,
+          0
+        ],
+        "cut": true,
+        "info": {
+          "summary": "Cast iron hollow sleeve (muff)",
+          "role": "Encloses the shaft ends and transmits torque across the junction through the key."
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "rOuter": "D_outer / 2000",
+            "rInner": "d / 2000",
+            "h": "L_sleeve / 1000"
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              "d / 2000 + h_key / 4000",
+              0,
+              0
+            ],
+            "sx": "h_key / 2000 + 0.002",
+            "sy": "L_sleeve / 1000 + 0.002",
+            "sz": "w_key / 1000"
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              "D_outer / 4000",
+              0,
+              0
+            ],
+            "r": 0.004,
+            "h": "D_outer / 1000"
+          }
+        ]
+      },
+      {
+        "id": "shaft_in",
+        "name": "Driving shaft",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          -0.1,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Driving input shaft",
+          "role": "Transfers rotational power from the driver into the coupling assembly."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": 1
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "sleeve",
+          "at": 0.5,
+          "offset": -0.082
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": "d / 2000",
+            "h": 0.16
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              "d / 2000 - h_key / 4000",
+              "0.08 - L_sleeve / 4000",
+              0
+            ],
+            "sx": "h_key / 2000 + 0.001",
+            "sy": "L_sleeve / 2000 + 0.002",
+            "sz": "w_key / 1000"
+          }
+        ]
+      },
+      {
+        "id": "shaft_out",
+        "name": "Driven shaft",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0.1,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Driven output shaft",
+          "role": "Receives torque through the coupling to drive the attached load."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": 1
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "sleeve",
+          "at": 0.5,
+          "offset": 0.082
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": "d / 2000",
+            "h": 0.16
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              "d / 2000 - h_key / 4000",
+              "-0.08 + L_sleeve / 4000",
+              0
+            ],
+            "sx": "h_key / 2000 + 0.001",
+            "sy": "L_sleeve / 2000 + 0.002",
+            "sz": "w_key / 1000"
+          }
+        ]
+      },
+      {
+        "id": "key",
+        "name": "Sunk key",
+        "material": "steelDark",
+        "role": "moving",
+        "explode": [
+          0,
+          0.07,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Parallel sunk key",
+          "role": "Bridges both shafts and the sleeve bore to transmit torque by shear and bearing."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": 1
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "sleeve",
+          "at": 0.5,
+          "shift": [
+            "d / 2000",
+            0,
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": "h_key / 1000",
+            "sy": "L_sleeve / 1000 - 0.004",
+            "sz": "w_key / 1000"
+          }
+        ]
+      },
+      {
+        "id": "setscrew",
+        "name": "Locking setscrew",
+        "material": "steelMatte",
+        "role": "static",
+        "explode": [
+          0,
+          0.11,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Socket head setscrew",
+          "role": "Clamps radially against the key to prevent axial wandering of the sleeve."
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "sleeve",
+          "at": 0.5,
+          "shift": [
+            "D_outer / 2000 - 0.004",
+            0,
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.0038,
+            "h": 0.014
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "t_in",
+        "kind": "moment",
+        "label": "T",
+        "magnitude": "T",
+        "unit": "N·m",
+        "anchor": {
+          "part": "shaft_in",
+          "at": "start"
+        }
+      },
+      {
+        "id": "t_out",
+        "kind": "moment",
+        "label": "T_{out}",
+        "magnitude": "T",
+        "unit": "N·m",
+        "anchor": {
+          "part": "shaft_out",
+          "at": "end"
+        }
+      },
+      {
+        "id": "sleeve_len",
+        "kind": "dimension",
+        "label": "L",
+        "magnitude": "L_sleeve",
+        "unit": "mm",
+        "anchor": {
+          "part": "sleeve",
+          "at": "center"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "tau_shaft",
+        "label": "Shaft shear stress",
+        "symbol": "\\tau_s",
+        "formula": "16 * T / (pi * (d / 1000)^3) / 1000000",
+        "unit": "MPa",
+        "latex": "\\tau_s = \\frac{16 T}{\\pi d^3}",
+        "limit": {
+          "kind": "max",
+          "value": 60,
+          "label": "Allowable shaft shear stress"
+        }
+      },
+      {
+        "id": "tau_sleeve",
+        "label": "Sleeve shear stress",
+        "symbol": "\\tau_m",
+        "formula": "16 * T * (D_outer / 1000) / (pi * ((D_outer / 1000)^4 - (d / 1000)^4)) / 1000000",
+        "unit": "MPa",
+        "latex": "\\tau_m = \\frac{16 T D}{\\pi (D^4 - d^4)}",
+        "limit": {
+          "kind": "max",
+          "value": 15,
+          "label": "Allowable cast iron shear stress"
+        }
+      },
+      {
+        "id": "tau_key",
+        "label": "Key shear stress",
+        "symbol": "\\tau_k",
+        "formula": "2 * T / ((d / 1000) * (w_key / 1000) * (L_sleeve / 1000)) / 1000000",
+        "unit": "MPa",
+        "latex": "\\tau_k = \\frac{2 T}{d \\cdot w \\cdot L}",
+        "limit": {
+          "kind": "max",
+          "value": 45,
+          "label": "Allowable key shear stress"
+        }
+      },
+      {
+        "id": "sigma_crush",
+        "label": "Key crushing stress",
+        "symbol": "\\sigma_c",
+        "formula": "4 * T / ((d / 1000) * (h_key / 1000) * (L_sleeve / 1000)) / 1000000",
+        "unit": "MPa",
+        "latex": "\\sigma_c = \\frac{4 T}{d \\cdot h \\cdot L}",
+        "limit": {
+          "kind": "max",
+          "value": 90,
+          "label": "Allowable key compressive stress"
+        }
+      }
+    ],
+    "charts": [
+      {
+        "id": "stress_curve",
+        "title": "Component Stresses vs Transmitted Torque",
+        "x": {
+          "label": "Torque",
+          "unit": "N·m",
+          "from": 20,
+          "to": 350
+        },
+        "y": {
+          "label": "Stress",
+          "unit": "MPa"
+        },
+        "series": [
+          {
+            "id": "s_shaft",
+            "label": "Shaft shear stress",
+            "formula": "16 * x / (pi * (d / 1000)^3) / 1000000"
+          },
+          {
+            "id": "s_key",
+            "label": "Key shear stress",
+            "formula": "2 * x / ((d / 1000) * (w_key / 1000) * (L_sleeve / 1000)) / 1000000"
+          },
+          {
+            "id": "s_crush",
+            "label": "Key crushing stress",
+            "formula": "4 * x / ((d / 1000) * (h_key / 1000) * (L_sleeve / 1000)) / 1000000"
+          },
+          {
+            "id": "s_sleeve",
+            "label": "Sleeve shear stress",
+            "formula": "16 * x * (D_outer / 1000) / (pi * ((D_outer / 1000)^4 - (d / 1000)^4)) / 1000000"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.32,
+        0.22,
+        0.38
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "extent": 0.45,
+    "floorY": -0.15,
+    "cut": {
+      "enabled": true,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0.001
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "spur-gear-pair",
+    "title": "Spur gear pair",
+    "summary": "Two spur gears placed by relation: the wheel meshes with the pinion and turns at the ratio of their teeth. Both shafts stand in a base plate.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "z1",
+        "label": "Pinion teeth",
+        "symbol": "z_1",
+        "value": 18,
+        "min": 12,
+        "max": 30,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "z2",
+        "label": "Wheel teeth",
+        "symbol": "z_2",
+        "value": 42,
+        "min": 20,
+        "max": 80,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "m",
+        "label": "Module",
+        "symbol": "m",
+        "value": 3,
+        "min": 1,
+        "max": 6,
+        "step": 0.5,
+        "unit": "mm"
+      },
+      {
+        "id": "N1",
+        "label": "Pinion speed",
+        "symbol": "N_1",
+        "value": 600,
+        "min": 0,
+        "max": 1500,
+        "step": 10,
+        "unit": "rpm"
+      }
+    ],
+    "parts": [
+      {
+        "id": "base",
+        "name": "Base plate",
+        "material": "castIron",
+        "role": "housing",
+        "explode": [
+          0,
+          0.14,
+          0
+        ],
+        "info": {
+          "summary": "The frame both shafts stand in, so the gears are held at their centre distance."
+        },
+        "mount": {
+          "kind": "against",
+          "target": "pinion",
+          "face": "-y",
+          "shift": [
+            "m * (z1 + z2) / 4000",
+            0,
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "box",
+            "sx": "m * (z1 + z2) / 2000 + m * z2 / 2000 + 0.06",
+            "sy": 0.01,
+            "sz": "m * z2 / 1000 + 0.04"
+          }
+        ]
+      },
+      {
+        "id": "pinion",
+        "name": "Pinion",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "info": {
+          "summary": "The driving gear. Only the driver has a motion; the wheel turns because it meshes."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "N1 * 2 * pi / 60 / 20"
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rInner": 0.008,
+            "h": 0.02,
+            "teeth": "z1",
+            "module": "m / 1000"
+          }
+        ],
+        "children": [
+          {
+            "id": "pinion_shaft",
+            "name": "Pinion shaft",
+            "material": "steelDark",
+            "role": "moving",
+            "shapes": [
+              {
+                "kind": "cylinder",
+                "r": 0.008,
+                "h": 0.05
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "wheel",
+        "name": "Wheel",
+        "material": "bronze",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "info": {
+          "summary": "The driven gear: its centre is the sum of the two pitch radii from the pinion's."
+        },
+        "mount": {
+          "kind": "mesh",
+          "target": "pinion",
+          "side": "+x"
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rInner": 0.01,
+            "h": 0.02,
+            "teeth": "z2",
+            "module": "m / 1000"
+          }
+        ],
+        "children": [
+          {
+            "id": "wheel_shaft",
+            "name": "Wheel shaft",
+            "material": "steelDark",
+            "role": "moving",
+            "shapes": [
+              {
+                "kind": "cylinder",
+                "r": 0.01,
+                "h": 0.05
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "calculations": [
+      {
+        "id": "i",
+        "label": "Gear ratio",
+        "symbol": "i",
+        "formula": "z2 / z1",
+        "unit": "",
+        "latex": "i = \\frac{z_2}{z_1}"
+      },
+      {
+        "id": "N2",
+        "label": "Wheel speed",
+        "symbol": "N_2",
+        "formula": "N1 / i",
+        "unit": "rpm",
+        "latex": "N_2 = \\frac{N_1}{i}"
+      },
+      {
+        "id": "a",
+        "label": "Centre distance",
+        "symbol": "a",
+        "formula": "m * (z1 + z2) / 2",
+        "unit": "mm",
+        "latex": "a = \\frac{m (z_1 + z_2)}{2}"
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.18,
+        0.22,
+        0.26
+      ],
+      "target": [
+        0.045,
+        0,
+        0
+      ]
+    },
+    "extent": 0.3,
+    "floorY": -0.07,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

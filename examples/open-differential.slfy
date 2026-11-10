@@ -1,0 +1,614 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "open-differential",
+    "title": "Open Differential Mechanism",
+    "summary": "An open differential gear train that splits input torque equally between two drive axles while allowing them to rotate at different speeds during cornering.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "N_ring",
+        "label": "Ring gear teeth",
+        "symbol": "z_r",
+        "value": 41,
+        "min": 35,
+        "max": 49,
+        "step": 2,
+        "unit": ""
+      },
+      {
+        "id": "N_pinion",
+        "label": "Drive pinion teeth",
+        "symbol": "z_p",
+        "value": 10,
+        "min": 8,
+        "max": 14,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "N_spider",
+        "label": "Spider gear teeth",
+        "symbol": "z_s",
+        "value": 10,
+        "min": 8,
+        "max": 14,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "id": "N_side",
+        "label": "Side gear teeth",
+        "symbol": "z_a",
+        "value": 16,
+        "min": 12,
+        "max": 20,
+        "step": 2,
+        "unit": ""
+      },
+      {
+        "id": "input_rpm",
+        "label": "Carrier input speed",
+        "symbol": "n_c",
+        "value": 300,
+        "min": 60,
+        "max": 1200,
+        "step": 30,
+        "unit": "rpm"
+      },
+      {
+        "id": "delta_rpm",
+        "label": "Differential wheel split",
+        "symbol": "Δn",
+        "value": 60,
+        "min": -150,
+        "max": 150,
+        "step": 10,
+        "unit": "rpm"
+      },
+      {
+        "id": "input_torque",
+        "label": "Input ring torque",
+        "symbol": "T_in",
+        "value": 350,
+        "min": 100,
+        "max": 800,
+        "step": 25,
+        "unit": "N·m"
+      }
+    ],
+    "parts": [
+      {
+        "id": "carrier",
+        "name": "Differential Carrier Case",
+        "material": "castIron",
+        "role": "housing",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          1.5708
+        ],
+        "explode": [
+          0,
+          0.12,
+          0
+        ],
+        "cut": true,
+        "info": {
+          "summary": "Differential cage housing",
+          "role": "Houses and supports the cross pin and side gears while rotating at the mean axle speed driven by the crown ring gear."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": "input_rpm / 60"
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.082,
+            "h": 0.11
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "r": 0.068,
+            "h": 0.09
+          },
+          {
+            "kind": "tube",
+            "rOuter": 0.042,
+            "rInner": 0.024,
+            "h": 0.17
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              -0.035,
+              0
+            ],
+            "r": 0.098,
+            "h": 0.012
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.011,
+            "h": 0.14
+          }
+        ]
+      },
+      {
+        "id": "ring_gear",
+        "name": "Crown Ring Gear",
+        "material": "steel",
+        "role": "moving",
+        "explode": [
+          -0.12,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Crown bevel ring gear",
+          "role": "Receives engine torque from the drive pinion shaft and transmits it directly into the revolving differential case."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": "input_rpm / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "carrier",
+          "at": 0.25,
+          "offset": -0.01
+        },
+        "shapes": [
+          {
+            "kind": "gear",
+            "rInner": 0.082,
+            "h": 0.024,
+            "teeth": "N_ring",
+            "module": 0.0042
+          },
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              -0.012,
+              0
+            ],
+            "rOuter": 0.105,
+            "rInner": 0.082,
+            "h": 0.018
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "radialCount": 8,
+            "radialRadius": 0.092,
+            "r": 0.005,
+            "h": 0.03
+          }
+        ]
+      },
+      {
+        "id": "cross_pin",
+        "name": "Spider Cross Pin",
+        "material": "steelDark",
+        "role": "moving",
+        "rotation": [
+          1.5708,
+          0,
+          0
+        ],
+        "explode": [
+          0,
+          0.15,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Differential spider shaft",
+          "role": "Mounts rigidly inside the revolving carrier to provide rotation axes for the two planetary spider pinion gears."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": "input_rpm / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "carrier",
+          "at": 0.5,
+          "offset": 0
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.01,
+            "h": 0.132
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              0,
+              0.058,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "r": 0.002,
+            "h": 0.022
+          }
+        ]
+      },
+      {
+        "id": "spider_top",
+        "name": "Upper Spider Pinion Gear",
+        "material": "bronze",
+        "role": "moving",
+        "rotation": [
+          0,
+          3.1416,
+          0
+        ],
+        "explode": [
+          0,
+          0.1,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Top bevel spider gear",
+          "role": "Transfers torque from the cross pin to both side gears, rotating on its pin only when the two drive wheels differ in speed."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "spider_spin / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "cross_pin",
+          "at": 0.8,
+          "offset": 0
+        },
+        "shapes": [
+          {
+            "kind": "bevelGear",
+            "rInner": 0.0105,
+            "h": 0.018,
+            "teeth": "N_spider",
+            "module": 0.0038
+          },
+          {
+            "kind": "tube",
+            "rOuter": 0.026,
+            "rInner": 0.0105,
+            "h": 0.01
+          }
+        ]
+      },
+      {
+        "id": "spider_bottom",
+        "name": "Lower Spider Pinion Gear",
+        "material": "bronze",
+        "role": "moving",
+        "explode": [
+          0,
+          -0.1,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Bottom bevel spider gear",
+          "role": "Balances driving torque symmetrically across the opposing side gears together with the upper spider pinion."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "-spider_spin / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "cross_pin",
+          "at": 0.2,
+          "offset": 0
+        },
+        "shapes": [
+          {
+            "kind": "bevelGear",
+            "rInner": 0.0105,
+            "h": 0.018,
+            "teeth": "N_spider",
+            "module": 0.0038
+          },
+          {
+            "kind": "tube",
+            "rOuter": 0.026,
+            "rInner": 0.0105,
+            "h": 0.01
+          }
+        ]
+      },
+      {
+        "id": "side_gear_left",
+        "name": "Left Side Gear & Axle Stub",
+        "material": "steel",
+        "role": "moving",
+        "rotation": [
+          0,
+          0,
+          1.5708
+        ],
+        "explode": [
+          -0.14,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Left side bevel gear and half-shaft spline",
+          "role": "Meshes with both spider pinions to deliver driving torque to the left wheel half-shaft."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": "n_left / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "carrier",
+          "at": 0.28,
+          "offset": 0
+        },
+        "shapes": [
+          {
+            "kind": "bevelGear",
+            "rInner": 0.014,
+            "h": 0.02,
+            "teeth": "N_side",
+            "module": 0.0038
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0.05,
+              0
+            ],
+            "r": 0.015,
+            "h": 0.12
+          },
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              0.008,
+              0
+            ],
+            "rOuter": 0.028,
+            "rInner": 0.015,
+            "h": 0.015
+          }
+        ]
+      },
+      {
+        "id": "side_gear_right",
+        "name": "Right Side Gear & Axle Stub",
+        "material": "steel",
+        "role": "moving",
+        "rotation": [
+          0,
+          0,
+          -1.5708
+        ],
+        "explode": [
+          0.14,
+          0,
+          0
+        ],
+        "cut": false,
+        "info": {
+          "summary": "Right side bevel gear and half-shaft spline",
+          "role": "Meshes with both spider pinions to deliver driving torque to the right wheel half-shaft."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "x",
+          "speed": "n_right / 60"
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "carrier",
+          "at": 0.72,
+          "offset": 0
+        },
+        "shapes": [
+          {
+            "kind": "bevelGear",
+            "rInner": 0.014,
+            "h": 0.02,
+            "teeth": "N_side",
+            "module": 0.0038
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0.05,
+              0
+            ],
+            "r": 0.015,
+            "h": 0.12
+          },
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              0.008,
+              0
+            ],
+            "rOuter": 0.028,
+            "rInner": 0.015,
+            "h": 0.015
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "ann_torque_in",
+        "kind": "moment",
+        "label": "T_in",
+        "magnitude": "input_torque",
+        "unit": "N·m",
+        "anchor": {
+          "part": "ring_gear",
+          "at": "center"
+        }
+      },
+      {
+        "id": "ann_t_left",
+        "kind": "moment",
+        "label": "T_L",
+        "magnitude": "torque_per_wheel",
+        "unit": "N·m",
+        "anchor": {
+          "part": "side_gear_left",
+          "at": "start"
+        }
+      },
+      {
+        "id": "ann_t_right",
+        "kind": "moment",
+        "label": "T_R",
+        "magnitude": "torque_per_wheel",
+        "unit": "N·m",
+        "anchor": {
+          "part": "side_gear_right",
+          "at": "end"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "final_drive_ratio",
+        "label": "Final drive ratio",
+        "symbol": "i_fd",
+        "formula": "N_ring / N_pinion",
+        "unit": "",
+        "latex": "i_{fd} = \\frac{z_r}{z_p}"
+      },
+      {
+        "id": "n_left",
+        "label": "Left axle speed",
+        "symbol": "n_L",
+        "formula": "input_rpm - delta_rpm / 2",
+        "unit": "rpm",
+        "latex": "n_L = n_c - \\frac{\\Delta n}{2}"
+      },
+      {
+        "id": "n_right",
+        "label": "Right axle speed",
+        "symbol": "n_R",
+        "formula": "input_rpm + delta_rpm / 2",
+        "unit": "rpm",
+        "latex": "n_R = n_c + \\frac{\\Delta n}{2}"
+      },
+      {
+        "id": "torque_per_wheel",
+        "label": "Axle torque per side",
+        "symbol": "T_axle",
+        "formula": "input_torque / 2",
+        "unit": "N·m",
+        "latex": "T_{axle} = \\frac{T_{in}}{2}"
+      },
+      {
+        "id": "spider_spin",
+        "label": "Spider relative spin",
+        "symbol": "n_spider",
+        "formula": "abs(delta_rpm) * (N_side / N_spider) / 2",
+        "unit": "rpm",
+        "latex": "n_s = \\frac{|\\Delta n|}{2} \\cdot \\frac{z_a}{z_s}"
+      }
+    ],
+    "charts": [
+      {
+        "id": "axle_speeds",
+        "title": "Left and Right Axle Speeds vs Speed Difference",
+        "x": {
+          "label": "Wheel speed differential Δn",
+          "unit": "rpm",
+          "from": "-150",
+          "to": "150"
+        },
+        "y": {
+          "label": "Axle speed",
+          "unit": "rpm"
+        },
+        "series": [
+          {
+            "id": "s_left",
+            "label": "Left axle speed (n_L)",
+            "formula": "input_rpm - x / 2"
+          },
+          {
+            "id": "s_right",
+            "label": "Right axle speed (n_R)",
+            "formula": "input_rpm + x / 2"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.38,
+        0.28,
+        0.44
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "extent": 0.48,
+    "floorY": -0.22,
+    "cut": {
+      "enabled": true,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0.02
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}

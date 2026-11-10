@@ -1,0 +1,258 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HectorGitt/slfy/main/schema/slfy-0.1.schema.json",
+  "format": "slfy",
+  "version": "0.1",
+  "model": {
+    "id": "shaft-in-torsion",
+    "title": "Solid shaft in torsion",
+    "summary": "A solid shaft whose diameter and torque are sliders; the shear stress and twist follow live.",
+    "units": "mm",
+    "parameters": [
+      {
+        "id": "d",
+        "label": "Shaft diameter",
+        "symbol": "d",
+        "value": 40,
+        "min": 20,
+        "max": 80,
+        "step": 1,
+        "unit": "mm"
+      },
+      {
+        "id": "L",
+        "label": "Shaft length",
+        "symbol": "L",
+        "value": 600,
+        "min": 300,
+        "max": 1000,
+        "step": 10,
+        "unit": "mm"
+      },
+      {
+        "id": "T",
+        "label": "Torque",
+        "symbol": "T",
+        "value": 500,
+        "min": 50,
+        "max": 2000,
+        "step": 10,
+        "unit": "N·m"
+      },
+      {
+        "id": "G",
+        "label": "Shear modulus",
+        "symbol": "G",
+        "value": 80,
+        "min": 25,
+        "max": 85,
+        "step": 1,
+        "unit": "GPa"
+      },
+      {
+        "id": "rpm",
+        "label": "Speed",
+        "symbol": "N",
+        "value": 120,
+        "min": 0,
+        "max": 600,
+        "step": 10,
+        "unit": "rpm"
+      }
+    ],
+    "parts": [
+      {
+        "id": "shaft",
+        "name": "Shaft",
+        "material": "steel",
+        "role": "moving",
+        "rotation": [
+          0,
+          0,
+          1.5708
+        ],
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "info": {
+          "summary": "A solid round shaft carrying torque T.",
+          "role": "Sizes are in metres, so the millimetre sliders are divided by 1000 in each size."
+        },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": "rpm * 2 * pi / 60 / 10"
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": "d / 2000",
+            "h": "L / 1000"
+          }
+        ]
+      },
+      {
+        "id": "bearing_left",
+        "name": "Left bearing",
+        "material": "castIron",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "mount": {
+          "kind": "coaxial",
+          "target": "shaft",
+          "at": 0.1
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "rOuter": "d / 2000 + 0.02",
+            "rInner": "d / 2000",
+            "h": 0.03
+          }
+        ]
+      },
+      {
+        "id": "bearing_right",
+        "name": "Right bearing",
+        "material": "castIron",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          0.1
+        ],
+        "mount": {
+          "kind": "coaxial",
+          "target": "shaft",
+          "at": 0.9
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "rOuter": "d / 2000 + 0.02",
+            "rInner": "d / 2000",
+            "h": 0.03
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "id": "torque",
+        "kind": "moment",
+        "label": "T",
+        "magnitude": "T",
+        "unit": "N·m",
+        "anchor": {
+          "part": "shaft",
+          "at": "end"
+        }
+      },
+      {
+        "id": "length",
+        "kind": "dimension",
+        "label": "L",
+        "anchor": {
+          "part": "shaft"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "J",
+        "label": "Polar second moment of area",
+        "symbol": "J",
+        "formula": "pi * (d / 1000) ^ 4 / 32",
+        "unit": "m⁴",
+        "latex": "J = \\frac{\\pi d^4}{32}"
+      },
+      {
+        "id": "tau",
+        "label": "Maximum shear stress",
+        "symbol": "tau",
+        "formula": "T * (d / 2000) / J / 1e6",
+        "unit": "MPa",
+        "latex": "\\tau = \\frac{T r}{J}",
+        "limit": {
+          "kind": "max",
+          "value": 80,
+          "label": "allowable"
+        }
+      },
+      {
+        "id": "theta",
+        "label": "Angle of twist",
+        "symbol": "theta",
+        "formula": "T * (L / 1000) / (G * 1e9 * J) * 180 / pi",
+        "unit": "°",
+        "latex": "\\theta = \\frac{T L}{G J}"
+      },
+      {
+        "id": "P",
+        "label": "Power transmitted",
+        "symbol": "P",
+        "formula": "T * rpm * 2 * pi / 60 / 1000",
+        "unit": "kW",
+        "latex": "P = \\frac{2 \\pi N T}{60}"
+      }
+    ],
+    "charts": [
+      {
+        "id": "tau_r",
+        "title": "Shear stress across the radius",
+        "x": {
+          "label": "r",
+          "unit": "mm",
+          "from": "0",
+          "to": "d / 2"
+        },
+        "y": {
+          "label": "τ",
+          "unit": "MPa"
+        },
+        "series": [
+          {
+            "id": "t",
+            "label": "τ",
+            "formula": "T * (x / 1000) / J / 1e6"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "camera": {
+      "position": [
+        0.45,
+        0.3,
+        0.55
+      ],
+      "target": [
+        0,
+        0,
+        0
+      ]
+    },
+    "extent": 0.6,
+    "floorY": -0.08,
+    "cut": {
+      "enabled": false,
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "pos": 0
+    }
+  },
+  "meta": {
+    "generator": "Solidify (solidify.studio)",
+    "license": "CC-BY-4.0",
+    "created": "2026-11-10"
+  }
+}
