@@ -47,8 +47,8 @@
         "role": "housing",
         "position": [
           0,
-          -0.08,
-          -0.04
+          0,
+          0
         ],
         "explode": [
           0,
@@ -57,135 +57,54 @@
         ],
         "cut": false,
         "info": {
-          "summary": "Rigid machine base with central bearing pedestal and horizontal guide bushings.",
-          "role": "Anchors the crank bearing and constrains yoke motion to pure horizontal translation."
+          "summary": "Machine base with a bearing pedestal for the crankshaft and two guide posts.",
+          "role": "Carries the crank bearing and holds the yoke rods so the yoke can only slide left and right."
         },
         "shapes": [
           {
             "kind": "box",
             "position": [
               0,
-              -0.06,
-              0.04
+              -0.1525,
+              -0.02
             ],
-            "sx": 0.44,
+            "sx": 0.5,
             "sy": 0.025,
-            "sz": 0.16
+            "sz": 0.24
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              -0.08,
+              -0.08
+            ],
+            "sx": 0.07,
+            "sy": 0.12,
+            "sz": 0.04
           },
           {
             "kind": "cylinder",
             "position": [
               0,
-              0.08,
-              0
+              0,
+              -0.08
             ],
             "rotation": [
               1.5708,
               0,
               0
             ],
-            "r": 0.045,
-            "h": 0.07
-          },
-          {
-            "kind": "box",
-            "position": [
-              0,
-              0.02,
-              0
-            ],
-            "sx": 0.07,
-            "sy": 0.08,
-            "sz": 0.07
-          },
-          {
-            "kind": "box",
-            "position": [
-              -0.17,
-              0.08,
-              0.04
-            ],
-            "sx": 0.05,
-            "sy": 0.06,
-            "sz": 0.06
+            "r": 0.036,
+            "h": 0.04
           },
           {
             "kind": "cylinder",
             "op": "subtract",
             "position": [
-              -0.17,
-              0.08,
-              0.04
-            ],
-            "rotation": [
               0,
               0,
-              1.5708
-            ],
-            "r": 0.012,
-            "h": 0.06
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.17,
-              0.08,
-              0.04
-            ],
-            "sx": 0.05,
-            "sy": 0.06,
-            "sz": 0.06
-          },
-          {
-            "kind": "cylinder",
-            "op": "subtract",
-            "position": [
-              0.17,
-              0.08,
-              0.04
-            ],
-            "rotation": [
-              0,
-              0,
-              1.5708
-            ],
-            "r": 0.012,
-            "h": 0.06
-          }
-        ]
-      },
-      {
-        "id": "crank",
-        "name": "Crank Disc & Pin",
-        "material": "steel",
-        "role": "moving",
-        "explode": [
-          0,
-          0,
-          -0.12
-        ],
-        "cut": false,
-        "info": {
-          "summary": "Counterweighted crank disc with an eccentric crank pin at radius r.",
-          "role": "Provides uniform rotational input that drives the slider block inside the yoke slot."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "z",
-          "speed": "rpm / 60"
-        },
-        "mount": {
-          "kind": "coaxial",
-          "target": "frame",
-          "offset": 0.035
-        },
-        "shapes": [
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              0,
-              -0.045
+              -0.08
             ],
             "rotation": [
               1.5708,
@@ -193,83 +112,193 @@
               0
             ],
             "r": 0.016,
-            "h": 0.09
+            "h": 0.05
+          },
+          {
+            "kind": "box",
+            "position": [
+              -0.21,
+              -0.055,
+              0.03
+            ],
+            "sx": 0.04,
+            "sy": 0.17,
+            "sz": 0.05
           },
           {
             "kind": "cylinder",
+            "op": "subtract",
             "position": [
+              -0.21,
               0,
-              0,
-              0.008
+              0.03
             ],
             "rotation": [
-              1.5708,
               0,
-              0
+              0,
+              1.5708
             ],
-            "r": "r + 0.022",
-            "h": 0.016
+            "r": 0.0115,
+            "h": 0.05
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.21,
+              -0.055,
+              0.03
+            ],
+            "sx": 0.04,
+            "sy": 0.17,
+            "sz": 0.05
           },
           {
             "kind": "cylinder",
+            "op": "subtract",
             "position": [
+              0.21,
               0,
-              "r",
-              0.032
+              0.03
             ],
             "rotation": [
-              1.5708,
               0,
-              0
+              0,
+              1.5708
             ],
-            "r": "d_pin / 2",
-            "h": 0.032
+            "r": 0.0115,
+            "h": 0.05
           }
         ]
       },
       {
-        "id": "slider_block",
-        "name": "Slider Block",
-        "material": "bronze",
+        "id": "crank",
+        "name": "Crank Disc and Shaft",
+        "material": "steel",
         "role": "moving",
+        "position": [
+          0,
+          0,
+          -0.045
+        ],
         "explode": [
           0,
-          0.08,
-          0
+          0,
+          -0.12
         ],
         "cut": false,
         "info": {
-          "summary": "Bronze bearing block journalled on the crank pin.",
-          "role": "Transmits force to the vertical faces of the yoke slot while freely sliding along it."
+          "summary": "A disc on the driving shaft; the crank pin is fixed in it at the crank radius.",
+          "role": "Turns at steady speed and carries the pin round in a circle."
         },
         "motion": {
           "kind": "rotate",
           "axis": "z",
-          "speed": "rpm / 60"
+          "speed": "rpm * 2 * pi / 60"
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.016,
+            "h": 0.12
+          },
+          {
+            "kind": "cylinder",
+            "position": [
+              0,
+              0,
+              0.052
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": "r + 0.026",
+            "h": 0.016
+          }
+        ]
+      },
+      {
+        "id": "pin",
+        "name": "Crank Pin",
+        "material": "chrome",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.06
+        ],
+        "cut": false,
+        "info": {
+          "summary": "A hardened pin pressed into the disc at the crank radius.",
+          "role": "Its sideways position is the yoke's position: x = r sin θ."
         },
         "mount": {
           "kind": "coaxial",
           "target": "crank",
           "at": 1,
-          "offset": -0.01
+          "offset": 0.018,
+          "shift": [
+            0,
+            "r",
+            0
+          ]
         },
         "shapes": [
           {
-            "kind": "box",
-            "sx": 0.032,
-            "sy": 0.032,
-            "sz": 0.02
-          },
-          {
             "kind": "cylinder",
-            "op": "subtract",
             "rotation": [
               1.5708,
               0,
               0
             ],
             "r": "d_pin / 2",
-            "h": 0.022
+            "h": 0.04
+          }
+        ]
+      },
+      {
+        "id": "slider_block",
+        "name": "Slider Roller",
+        "material": "bronze",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.12
+        ],
+        "cut": false,
+        "info": {
+          "summary": "A bronze roller on the crank pin, a close fit in the yoke's slot.",
+          "role": "Rolls up and down the slot while pushing the yoke sideways."
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "crank",
+          "at": 1,
+          "offset": 0.015,
+          "shift": [
+            0,
+            "r",
+            0
+          ]
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "rOuter": 0.016,
+            "rInner": "d_pin / 2",
+            "h": 0.02
           }
         ]
       },
@@ -278,60 +307,46 @@
         "name": "Scotch Yoke Crosshead",
         "material": "forged",
         "role": "moving",
-        "explode": [
-          0.12,
+        "position": [
           0,
+          0,
+          0.03
+        ],
+        "explode": [
+          0,
+          0.14,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "Slotted crosshead with twin horizontal guide shafts.",
-          "role": "Converts the rotational displacement into exact sinusoidal linear output along its guides."
-        },
-        "motion": {
-          "kind": "oscillate",
-          "axis": "x",
-          "speed": "rpm / 60",
-          "amplitude": "r"
+          "summary": "A slotted crosshead with a guide rod each side.",
+          "role": "Follows the pin's sideways position only, so it moves in exact simple harmonic motion."
         },
         "mount": {
-          "kind": "against",
-          "target": "frame",
-          "face": "+y",
-          "shift": [
-            0,
-            0.08,
-            0.04
-          ]
+          "kind": "follower",
+          "target": "crank",
+          "direction": "+x",
+          "of": "pin",
+          "throw": "r"
         },
         "shapes": [
           {
             "kind": "box",
-            "position": [
-              0,
-              0,
-              0
-            ],
-            "sx": 0.065,
-            "sy": "2 * r + 0.075",
-            "sz": 0.026
+            "sx": 0.07,
+            "sy": "2 * r + 0.09",
+            "sz": 0.02
           },
           {
             "kind": "box",
             "op": "subtract",
-            "position": [
-              0,
-              0,
-              0
-            ],
             "sx": 0.033,
-            "sy": "2 * r + 0.034",
+            "sy": "2 * r + 0.04",
             "sz": 0.03
           },
           {
             "kind": "cylinder",
             "position": [
-              -0.11,
+              -0.18,
               0,
               0
             ],
@@ -341,12 +356,12 @@
               1.5708
             ],
             "r": 0.011,
-            "h": 0.16
+            "h": 0.29
           },
           {
             "kind": "cylinder",
             "position": [
-              0.11,
+              0.18,
               0,
               0
             ],
@@ -356,7 +371,7 @@
               1.5708
             ],
             "r": 0.011,
-            "h": 0.16
+            "h": 0.29
           }
         ]
       }
@@ -368,10 +383,16 @@
         "label": "Stroke",
         "magnitude": "stroke",
         "unit": "m",
-        "anchor": {
-          "part": "yoke",
-          "at": "+y"
-        }
+        "from": [
+          "-r",
+          "r + 0.085",
+          0.03
+        ],
+        "to": [
+          "r",
+          "r + 0.085",
+          0.03
+        ]
       },
       {
         "id": "torque_in",
@@ -449,18 +470,18 @@
   "view": {
     "camera": {
       "position": [
-        0.45,
-        0.32,
-        0.55
+        0.5,
+        0.3,
+        0.75
       ],
       "target": [
         0,
-        0,
+        -0.03,
         0
       ]
     },
-    "extent": 0.55,
-    "floorY": -0.22,
+    "extent": 0.7,
+    "floorY": -0.2,
     "cut": {
       "enabled": false,
       "normal": [
@@ -474,6 +495,6 @@
   "meta": {
     "generator": "Solidify (solidify.studio)",
     "license": "CC-BY-4.0",
-    "created": "2026-11-10"
+    "created": "2026-11-11"
   }
 }

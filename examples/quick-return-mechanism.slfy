@@ -39,16 +39,6 @@
         "unit": "m"
       },
       {
-        "id": "L_link",
-        "label": "Drag Link Length",
-        "symbol": "l_d",
-        "value": 0.11,
-        "min": 0.08,
-        "max": 0.16,
-        "step": 0.005,
-        "unit": "m"
-      },
-      {
         "id": "speed",
         "label": "Bull Gear Speed",
         "symbol": "n",
@@ -72,7 +62,7 @@
     "parts": [
       {
         "id": "frame",
-        "name": "Shaper Column & Guideway",
+        "name": "Shaper Column and Base",
         "material": "castIron",
         "role": "housing",
         "position": [
@@ -81,120 +71,109 @@
           0
         ],
         "explode": [
-          -0.14,
           0,
-          0
+          0,
+          -0.2
         ],
         "cut": false,
         "info": {
-          "summary": "Heavy cast-iron column of the shaping machine",
-          "role": "Anchors the bull gear spindle bearing, supports the lower rocker pivot pin, and provides top horizontal dovetail guideways for the reciprocating ram."
+          "summary": "The machine's column on its base, with the ram's guideway on top.",
+          "role": "Carries the bull gear's stub shaft, the lever's pivot and the ram."
         },
         "shapes": [
           {
             "kind": "box",
             "position": [
-              -0.08,
               0,
-              -0.15
+              "((L_lever - c + 0.04) - 0.3) / 2",
+              -0.11
             ],
-            "sx": 0.32,
-            "sy": 0.52,
+            "sx": 0.28,
+            "sy": "(L_lever - c + 0.04) + 0.3",
             "sz": 0.22
           },
           {
             "kind": "box",
             "position": [
-              -0.04,
-              -0.24,
-              -0.06
+              0.15,
+              -0.325,
+              -0.05
             ],
-            "sx": 0.44,
+            "sx": 0.8,
             "sy": 0.05,
-            "sz": 0.38
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.04,
-              0.22,
-              -0.04
-            ],
-            "sx": 0.46,
-            "sy": 0.06,
-            "sz": 0.18
+            "sz": 0.42
           },
           {
             "kind": "cylinder",
             "position": [
-              0.06,
               0,
-              -0.04
+              0,
+              0.0125
             ],
             "rotation": [
               1.5708,
               0,
               0
             ],
-            "r": 0.052,
-            "h": 0.08
+            "r": 0.02,
+            "h": 0.045
           },
           {
             "kind": "cylinder",
             "position": [
-              0.06,
+              0,
               "-c",
-              0.01
+              0.015
             ],
             "rotation": [
               1.5708,
               0,
               0
             ],
-            "r": 0.034,
-            "h": 0.07
+            "r": 0.03,
+            "h": 0.03
           }
         ]
       },
       {
         "id": "bull_gear",
-        "name": "Bull Gear Crank Disc",
+        "name": "Bull Gear and Crank Pin",
         "material": "steel",
         "role": "moving",
+        "position": [
+          0,
+          0,
+          0.055
+        ],
         "explode": [
           0,
           0,
-          0.12
+          0.1
         ],
         "cut": false,
         "info": {
-          "summary": "Precision spur bull gear with radial crank pin guide",
-          "role": "Rotates at uniform speed to orbit the adjustable crank pin, driving the sliding block back and forth inside the rocker arm."
+          "summary": "A large gear turning at steady speed, with the crank pin fixed in its face.",
+          "role": "The crank of the mechanism: the pin's radius sets the stroke."
         },
         "motion": {
           "kind": "rotate",
           "axis": "z",
-          "speed": "speed / 60"
-        },
-        "mount": {
-          "kind": "against",
-          "target": "frame",
-          "face": "+z",
-          "shift": [
-            0.06,
-            0,
-            0.01
-          ]
+          "speed": "speed * 2 * pi / 60"
         },
         "shapes": [
           {
             "kind": "gear",
+            "position": [
+              0,
+              0,
+              -0.037
+            ],
             "rotation": [
               1.5708,
               0,
               0
             ],
-            "rInner": 0.024,
+            "rInner": 0.02,
             "h": 0.026,
             "teeth": 38,
             "module": 0.0055
@@ -203,184 +182,8 @@
             "kind": "cylinder",
             "position": [
               0,
-              0,
-              0.015
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.085,
-            "h": 0.008
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
               "r",
-              0.024
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.014,
-            "h": 0.032
-          }
-        ]
-      },
-      {
-        "id": "sliding_block",
-        "name": "Crank Slide Die Block",
-        "material": "bronze",
-        "role": "moving",
-        "explode": [
-          0,
-          0,
-          0.14
-        ],
-        "cut": false,
-        "info": {
-          "summary": "Phosphor-bronze crank sliding block",
-          "role": "Rotates freely on the bull gear crank pin while sliding within the rocker arm slot to convert uniform rotation into quick-return oscillation."
-        },
-        "mount": {
-          "kind": "coaxial",
-          "target": "bull_gear",
-          "shift": [
-            0,
-            "r",
-            0.024
-          ]
-        },
-        "shapes": [
-          {
-            "kind": "box",
-            "sx": 0.044,
-            "sy": 0.042,
-            "sz": 0.024
-          },
-          {
-            "kind": "tube",
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "rOuter": 0.02,
-            "rInner": 0.014,
-            "h": 0.026
-          }
-        ]
-      },
-      {
-        "id": "slotted_lever",
-        "name": "Slotted Rocker Lever",
-        "material": "forged",
-        "role": "moving",
-        "explode": [
-          0,
-          0,
-          0.16
-        ],
-        "cut": false,
-        "info": {
-          "summary": "Long oscillating slotted arm pivoted at base",
-          "role": "Driven by the crank slide block through an angle 2φ, producing a slow cutting stroke and rapid non-cutting return."
-        },
-        "motion": {
-          "kind": "oscillate",
-          "axis": "z",
-          "speed": "speed / 60",
-          "amplitude": "asin(r / c) * 180 / pi"
-        },
-        "mount": {
-          "kind": "against",
-          "target": "frame",
-          "face": "+z",
-          "shift": [
-            0.06,
-            "-c",
-            0.038
-          ]
-        },
-        "shapes": [
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.028,
-            "h": 0.032
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              0,
-              -0.02
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.016,
-            "h": 0.04
-          },
-          {
-            "kind": "box",
-            "position": [
-              0,
-              "L_lever / 2",
-              0
-            ],
-            "sx": 0.054,
-            "sy": "L_lever",
-            "sz": 0.026
-          },
-          {
-            "kind": "box",
-            "op": "subtract",
-            "position": [
-              0,
-              "c",
-              0
-            ],
-            "sx": 0.044,
-            "sy": "2 * r + 0.06",
-            "sz": 0.03
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              "L_lever",
-              0
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.022,
-            "h": 0.03
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              "L_lever",
-              0.01
+              0.013
             ],
             "rotation": [
               1.5708,
@@ -388,52 +191,127 @@
               0
             ],
             "r": 0.012,
-            "h": 0.046
+            "h": 0.074
           }
         ]
       },
       {
-        "id": "connecting_link",
-        "name": "Drag Link",
-        "material": "steel",
+        "id": "sliding_block",
+        "name": "Sliding Block",
+        "material": "bronze",
         "role": "moving",
         "explode": [
           0,
-          0.08,
-          0.08
+          0,
+          0.22
         ],
         "cut": false,
         "info": {
-          "summary": "Short connecting link between rocker top and ram",
-          "role": "Accommodates the slight vertical arc of the rocker arm tip while transmitting horizontal cutting force directly into the ram."
-        },
-        "motion": {
-          "kind": "oscillate",
-          "axis": "x",
-          "speed": "speed / 60",
-          "amplitude": "stroke / 2"
+          "summary": "A bronze block on the crank pin, a sliding fit in the lever's slot.",
+          "role": "Pushes the lever from side to side while sliding along it."
         },
         "mount": {
           "kind": "coaxial",
-          "target": "slotted_lever",
+          "target": "bull_gear",
+          "at": 0.5,
           "shift": [
-            "L_link / 2",
-            "L_lever",
-            0.026
+            0,
+            "r",
+            0
           ]
         },
         "shapes": [
           {
+            "kind": "tube",
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "rOuter": 0.016,
+            "rInner": 0.012,
+            "h": 0.026
+          }
+        ]
+      },
+      {
+        "id": "lever_pivot",
+        "name": "Lever Pivot Pin",
+        "material": "chrome",
+        "role": "static",
+        "position": [
+          0,
+          "-c",
+          0.055
+        ],
+        "rotation": [
+          1.5708,
+          0,
+          0
+        ],
+        "explode": [
+          0,
+          -0.06,
+          0.1
+        ],
+        "cut": false,
+        "info": {
+          "summary": "A fixed pin below the bull gear.",
+          "role": "The slotted lever swings about it; its distance below the gear, with the crank radius, sets the quick-return ratio."
+        },
+        "shapes": [
+          {
+            "kind": "cylinder",
+            "r": 0.012,
+            "h": 0.05
+          }
+        ]
+      },
+      {
+        "id": "slotted_lever",
+        "name": "Slotted Lever",
+        "material": "forged",
+        "role": "moving",
+        "explode": [
+          0,
+          0,
+          0.28
+        ],
+        "cut": false,
+        "info": {
+          "summary": "A long lever with a slot for the sliding block, pivoted at its foot.",
+          "role": "Always points through the crank pin, so it swings forward slowly and back quickly."
+        },
+        "mount": {
+          "kind": "lever",
+          "target": "bull_gear",
+          "pivot": "lever_pivot",
+          "throw": "r"
+        },
+        "shapes": [
+          {
             "kind": "box",
-            "sx": "L_link",
-            "sy": 0.024,
-            "sz": 0.018
+            "sx": 0.05,
+            "sy": "L_lever",
+            "sz": 0.02
+          },
+          {
+            "kind": "box",
+            "op": "subtract",
+            "position": [
+              0,
+              "c - L_lever / 2",
+              0
+            ],
+            "sx": 0.033,
+            "sy": "2 * r + 0.05",
+            "sz": 0.03
           },
           {
             "kind": "cylinder",
             "position": [
-              "-L_link / 2",
               0,
+              "L_lever / 2 - 0.015",
               0
             ],
             "rotation": [
@@ -441,108 +319,91 @@
               0,
               0
             ],
-            "r": 0.018,
-            "h": 0.022
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              "L_link / 2",
-              0,
-              0
-            ],
-            "rotation": [
-              1.5708,
-              0,
-              0
-            ],
-            "r": 0.018,
-            "h": 0.022
+            "r": 0.01,
+            "h": 0.07
           }
         ]
       },
       {
         "id": "ram",
         "name": "Shaper Ram",
-        "material": "castIron",
+        "material": "paintGreen",
         "role": "moving",
+        "position": [
+          0,
+          "(L_lever - c + 0.04) + 0.0325",
+          -0.06
+        ],
         "explode": [
           0,
-          0.12,
+          0.14,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "Rigid reciprocating ram sliding on top guideways",
-          "role": "Translates horizontally to carry the tool head across the workpiece and absorb high cutting thrust."
-        },
-        "motion": {
-          "kind": "oscillate",
-          "axis": "x",
-          "speed": "speed / 60",
-          "amplitude": "stroke / 2"
+          "summary": "The sliding arm that carries the tool, with a slotted lug the lever's top pin works in.",
+          "role": "Follows the top of the lever along its guideway: a slow cutting stroke, a fast return."
         },
         "mount": {
-          "kind": "against",
-          "target": "frame",
-          "face": "+y",
-          "shift": [
-            0.08,
-            0.026,
-            0.01
-          ]
+          "kind": "follower",
+          "target": "slotted_lever",
+          "direction": "+x",
+          "of": "tip",
+          "offset": 0.06
         },
         "shapes": [
           {
             "kind": "box",
-            "position": [
-              0,
-              0,
-              0
-            ],
-            "sx": 0.48,
+            "sx": 0.5,
             "sy": 0.065,
             "sz": 0.14
           },
           {
             "kind": "box",
             "position": [
-              0,
-              -0.038,
-              0
+              -0.06,
+              -0.015,
+              0.105
             ],
-            "sx": 0.48,
-            "sy": 0.018,
-            "sz": 0.11
+            "sx": 0.05,
+            "sy": 0.035,
+            "sz": 0.1
           },
           {
             "kind": "box",
             "position": [
-              "-0.12 + L_link / 2",
-              -0.04,
-              0.05
+              -0.06,
+              -0.0925,
+              0.1425
             ],
-            "sx": 0.036,
-            "sy": 0.046,
-            "sz": 0.034
+            "sx": 0.05,
+            "sy": 0.12,
+            "sz": 0.025
           },
           {
-            "kind": "cylinder",
+            "kind": "box",
+            "op": "subtract",
             "position": [
-              0,
-              0.048,
-              0
+              -0.06,
+              -0.09,
+              0.1425
             ],
-            "r": 0.016,
-            "h": 0.044
+            "sx": 0.024,
+            "sy": 0.1,
+            "sz": 0.04
           }
         ]
       },
       {
         "id": "tool_head",
-        "name": "Tool Head & Clapper Box",
+        "name": "Tool Head and Clapper Box",
         "material": "steelDark",
         "role": "moving",
+        "position": [
+          0,
+          "(L_lever - c + 0.04) + 0.005",
+          -0.06
+        ],
         "explode": [
           0.12,
           0,
@@ -550,165 +411,99 @@
         ],
         "cut": false,
         "info": {
-          "summary": "Swivelling clapper box and downfeed tool slide",
-          "role": "Clamps the single-point cutting tool; swivels outward on the return stroke to prevent tool wear and workpiece scoring."
-        },
-        "motion": {
-          "kind": "oscillate",
-          "axis": "x",
-          "speed": "speed / 60",
-          "amplitude": "stroke / 2"
+          "summary": "The head on the front of the ram, holding the cutting tool.",
+          "role": "The clapper box lets the tool lift clear of the work on the return stroke."
         },
         "mount": {
-          "kind": "against",
-          "target": "ram",
-          "face": "+x",
-          "shift": [
-            0.02,
-            -0.02,
-            0
-          ]
+          "kind": "follower",
+          "target": "slotted_lever",
+          "direction": "+x",
+          "of": "tip",
+          "offset": 0.341
         },
         "shapes": [
           {
             "kind": "box",
-            "position": [
-              0,
-              0,
-              0
-            ],
             "sx": 0.03,
             "sy": 0.12,
             "sz": 0.08
           },
           {
-            "kind": "cylinder",
-            "position": [
-              0.022,
-              0,
-              0
-            ],
-            "rotation": [
-              0,
-              0,
-              1.5708
-            ],
-            "r": 0.036,
-            "h": 0.018
-          },
-          {
             "kind": "box",
             "position": [
-              0.038,
+              0.03,
               -0.02,
               0
             ],
-            "sx": 0.032,
+            "sx": 0.03,
             "sy": 0.06,
             "sz": 0.05
           },
           {
             "kind": "box",
             "position": [
-              0.056,
-              -0.03,
-              0
-            ],
-            "sx": 0.024,
-            "sy": 0.04,
-            "sz": 0.024
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.056,
-              -0.068,
+              0.04,
+              -0.08,
               0
             ],
             "sx": 0.014,
-            "sy": 0.052,
+            "sy": 0.06,
             "sz": 0.014
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0.014,
-              0.072,
-              0
-            ],
-            "r": 0.02,
-            "h": 0.012
           }
         ]
       },
       {
         "id": "work_table",
-        "name": "Worktable & Machine Vise",
+        "name": "Worktable and Vice",
         "material": "castIron",
-        "role": "housing",
-        "explode": [
+        "role": "static",
+        "position": [
+          0.38,
           0,
-          -0.1,
-          0.08
+          -0.06
+        ],
+        "explode": [
+          0.2,
+          0,
+          0
         ],
         "cut": false,
         "info": {
-          "summary": "T-slotted table and knee assembly with machine vise",
-          "role": "Supports and clamps the workpiece directly beneath the cutting tool path."
-        },
-        "mount": {
-          "kind": "against",
-          "target": "frame",
-          "face": "+x",
-          "shift": [
-            0.09,
-            -0.11,
-            0.01
-          ]
+          "summary": "The table in front of the column, with a vice holding the work.",
+          "role": "Holds the work still under the tool's path."
         },
         "shapes": [
           {
             "kind": "box",
             "position": [
               0,
-              0,
-              0
-            ],
-            "sx": 0.16,
-            "sy": 0.2,
-            "sz": 0.16
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.01,
-              0.1,
-              0
-            ],
-            "sx": 0.18,
-            "sy": 0.035,
-            "sz": 0.16
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.01,
-              0.134,
-              0
-            ],
-            "sx": 0.12,
-            "sy": 0.034,
-            "sz": 0.1
-          },
-          {
-            "kind": "box",
-            "position": [
-              0.01,
-              0.162,
+              "((L_lever - c - 0.07) - 0.36) / 2",
               0
             ],
             "sx": 0.09,
-            "sy": 0.024,
+            "sy": "(L_lever - c - 0.07) + 0.24",
+            "sz": 0.09
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              "(L_lever - c - 0.07) - 0.045",
+              0
+            ],
+            "sx": 0.24,
+            "sy": 0.03,
+            "sz": 0.18
+          },
+          {
+            "kind": "box",
+            "position": [
+              0,
+              "(L_lever - c - 0.07) - 0.015",
+              0
+            ],
+            "sx": 0.11,
+            "sy": 0.03,
             "sz": 0.06
           }
         ]
@@ -721,10 +516,16 @@
         "label": "Stroke S",
         "magnitude": "stroke",
         "unit": "m",
-        "anchor": {
-          "part": "ram",
-          "at": "+y"
-        }
+        "from": [
+          "0.06 + 0.25 - stroke / 2",
+          "(L_lever - c + 0.04) + 0.12",
+          -0.06
+        ],
+        "to": [
+          "0.06 + 0.25 + stroke / 2",
+          "(L_lever - c + 0.04) + 0.12",
+          -0.06
+        ]
       },
       {
         "id": "cutting_force",
@@ -843,18 +644,18 @@
   "view": {
     "camera": {
       "position": [
-        0.55,
-        0.32,
-        0.62
+        -0.2,
+        0.28,
+        1.1
       ],
       "target": [
-        0.06,
-        0.02,
-        0.02
+        0.12,
+        -0.05,
+        0
       ]
     },
-    "extent": 0.6,
-    "floorY": -0.26,
+    "extent": 0.9,
+    "floorY": -0.2,
     "cut": {
       "enabled": false,
       "normal": [
@@ -868,6 +669,6 @@
   "meta": {
     "generator": "Solidify (solidify.studio)",
     "license": "CC-BY-4.0",
-    "created": "2026-11-10"
+    "created": "2026-11-11"
   }
 }

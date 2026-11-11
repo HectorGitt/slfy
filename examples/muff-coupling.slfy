@@ -307,7 +307,7 @@
       {
         "id": "t_out",
         "kind": "moment",
-        "label": "T_{out}",
+        "label": "T_out",
         "magnitude": "T",
         "unit": "N·m",
         "anchor": {
@@ -448,6 +448,6 @@
   "meta": {
     "generator": "Solidify (solidify.studio)",
     "license": "CC-BY-4.0",
-    "created": "2026-11-10"
+    "created": "2026-11-11"
   }
 }

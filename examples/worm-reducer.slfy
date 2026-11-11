@@ -77,49 +77,48 @@
         "role": "housing",
         "position": [
           0,
-          -0.02,
+          0,
           0
         ],
         "explode": [
           0,
-          -0.12,
-          0
+          0,
+          -0.22
         ],
-        "cut": true,
         "info": {
-          "summary": "Ribbed cast iron casing and oil sump",
-          "role": "Encloses the gearing, holds lubricating oil, and supports bearing bores for perpendicular shafts."
+          "summary": "A cast box with a bore for each shaft and a foot to bolt it down.",
+          "role": "Holds the worm under the wheel at the right centre distance and keeps the oil in."
         },
         "shapes": [
           {
             "kind": "box",
             "position": [
               0,
-              0,
+              "(((z2 * m / 2000 + m / 1000) + 0.025) + (-((q + z2) * m / 2000) - (q * m / 2000) - 0.03)) / 2",
               0
             ],
-            "sx": 0.28,
-            "sy": 0.22,
-            "sz": 0.22
+            "sx": "2 * (z2 * m / 2000 + m / 1000) + 0.07",
+            "sy": "((z2 * m / 2000 + m / 1000) + 0.025) - (-((q + z2) * m / 2000) - (q * m / 2000) - 0.03)",
+            "sz": "2 * ((q * m / 2000) + 0.035) + 0.03"
           },
           {
             "kind": "box",
             "op": "subtract",
             "position": [
               0,
-              0.02,
+              "(((z2 * m / 2000 + m / 1000) + 0.025) + (-((q + z2) * m / 2000) - (q * m / 2000) - 0.03)) / 2",
               0
             ],
-            "sx": 0.24,
-            "sy": 0.18,
-            "sz": 0.18
+            "sx": "2 * (z2 * m / 2000 + m / 1000) + 0.04",
+            "sy": "((z2 * m / 2000 + m / 1000) + 0.025) - (-((q + z2) * m / 2000) - (q * m / 2000) - 0.03) - 0.03",
+            "sz": "2 * ((q * m / 2000) + 0.035)"
           },
           {
             "kind": "cylinder",
             "op": "subtract",
             "position": [
               0,
-              -0.06,
+              "-((q + z2) * m / 2000)",
               0
             ],
             "rotation": [
@@ -127,15 +126,15 @@
               0,
               1.5708
             ],
-            "r": 0.032,
-            "h": 0.3
+            "r": 0.03,
+            "h": "2 * (z2 * m / 2000 + m / 1000) + 0.1"
           },
           {
             "kind": "cylinder",
             "op": "subtract",
             "position": [
               0,
-              0.04,
+              0,
               0
             ],
             "rotation": [
@@ -143,19 +142,19 @@
               0,
               0
             ],
-            "r": 0.035,
-            "h": 0.24
+            "r": 0.034,
+            "h": "2 * ((q * m / 2000) + 0.035) + 0.06"
           },
           {
             "kind": "box",
             "position": [
               0,
-              -0.11,
+              "(-((q + z2) * m / 2000) - (q * m / 2000) - 0.03) - 0.008",
               0
             ],
-            "sx": 0.32,
-            "sy": 0.02,
-            "sz": 0.26
+            "sx": "2 * (z2 * m / 2000 + m / 1000) + 0.17",
+            "sy": 0.016,
+            "sz": "2 * ((q * m / 2000) + 0.035) + 0.11"
           }
         ]
       },
@@ -164,71 +163,48 @@
         "name": "Worm shaft",
         "material": "steel",
         "role": "moving",
+        "position": [
+          0,
+          "-((q + z2) * m / 2000)",
+          0
+        ],
         "rotation": [
           0,
           0,
           1.5708
         ],
         "explode": [
-          -0.15,
+          0.22,
           0,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "Case-hardened steel drive shaft with integral worm",
-          "role": "Transmits high-speed input torque and drives the worm wheel through helical sliding mesh."
+          "summary": "The input shaft, with a screw thread (the worm) cut on its middle.",
+          "role": "Each turn moves the wheel on by one tooth per start, which is where the large reduction comes from."
         },
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "n_in / 60"
-        },
-        "mount": {
-          "kind": "against",
-          "target": "gearbox_housing",
-          "face": "+y",
-          "shift": [
-            0,
-            -0.15,
-            0
-          ]
+          "speed": "n_in * 2 * pi / 60 / 25"
         },
         "shapes": [
           {
             "kind": "cylinder",
             "r": 0.015,
-            "h": 0.34
+            "h": "2 * (z2 * m / 2000 + m / 1000) + 0.16"
           },
           {
             "kind": "cylinder",
-            "r": "(q * m / 2000)",
+            "r": "(q * m / 2000) - m / 1000",
             "h": 0.1
           },
           {
-            "kind": "cylinder",
-            "r": "(q * m / 2000) + (m / 1000)",
-            "h": 0.08
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              0.08,
-              0
-            ],
-            "r": 0.022,
-            "h": 0.02
-          },
-          {
-            "kind": "cylinder",
-            "position": [
-              0,
-              -0.08,
-              0
-            ],
-            "r": 0.022,
-            "h": 0.02
+            "kind": "spring",
+            "r": "(q * m / 2000)",
+            "h": 0.09,
+            "turns": "0.09 / (pi * m / 1000 * z1)",
+            "wireRadius": "m * 0.0007"
           }
         ]
       },
@@ -237,6 +213,11 @@
         "name": "Bronze worm wheel",
         "material": "bronze",
         "role": "moving",
+        "position": [
+          0,
+          0,
+          0
+        ],
         "rotation": [
           1.5708,
           0,
@@ -244,41 +225,32 @@
         ],
         "explode": [
           0,
-          0,
-          0.14
+          0.16,
+          0
         ],
         "cut": false,
         "info": {
-          "summary": "Phosphor-bronze toothed rim bolted to hub",
-          "role": "Meshes with the steel worm to provide low friction, high reduction ratio, and smooth torque transmission."
+          "summary": "A bronze gear whose teeth wrap partly round the worm.",
+          "role": "Driven by the worm at right angles; bronze on steel slides with little wear."
         },
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "(n_in / 60) / (z2 / z1)"
-        },
-        "mount": {
-          "kind": "against",
-          "target": "worm_shaft",
-          "face": "+y",
-          "shift": [
-            0,
-            0.1,
-            0
-          ]
+          "speed": "(n_in * 2 * pi / 60 / 25) / (z2 / z1)"
         },
         "shapes": [
           {
             "kind": "gear",
-            "rInner": 0.025,
+            "rInner": 0.022,
             "h": 0.038,
             "teeth": "z2",
             "module": "m / 1000"
           },
           {
-            "kind": "cylinder",
-            "r": 0.035,
-            "h": 0.048
+            "kind": "tube",
+            "rOuter": 0.034,
+            "rInner": 0.022,
+            "h": 0.05
           }
         ]
       },
@@ -290,17 +262,12 @@
         "explode": [
           0,
           0,
-          -0.14
+          0.22
         ],
         "cut": false,
         "info": {
-          "summary": "Heavy-duty steel cross shaft",
-          "role": "Transmits high output torque delivered by the worm wheel to the driven machinery."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "y",
-          "speed": "(n_in / 60) / (z2 / z1)"
+          "summary": "The slow shaft, keyed to the worm wheel.",
+          "role": "Delivers the multiplied torque."
         },
         "mount": {
           "kind": "coaxial",
@@ -311,92 +278,95 @@
           {
             "kind": "cylinder",
             "r": 0.022,
-            "h": 0.28
-          },
-          {
-            "kind": "cylinder",
-            "r": 0.026,
-            "h": 0.05
+            "h": "2 * ((q * m / 2000) + 0.035) + 0.14"
           }
         ]
       },
       {
         "id": "bearings_worm",
-        "name": "Tapered roller bearings (worm)",
+        "name": "Worm shaft bearings",
         "material": "bearing",
-        "role": "housing",
+        "role": "static",
         "explode": [
-          -0.08,
           0,
+          -0.08,
           0
         ],
-        "cut": false,
         "info": {
-          "summary": "Angular contact / tapered roller bearing pair",
-          "role": "Carries large axial thrust loads and radial forces generated by the worm screw action."
+          "summary": "A bearing in each side wall, on the worm shaft.",
+          "role": "Take the heavy end thrust the worm makes as it pushes the wheel round."
         },
         "mount": {
           "kind": "coaxial",
           "target": "worm_shaft",
-          "at": 0.18
+          "at": 0.5
         },
         "shapes": [
           {
             "kind": "tube",
+            "position": [
+              0,
+              "(z2 * m / 2000 + m / 1000) + 0.0275",
+              0
+            ],
             "rOuter": 0.03,
-            "rInner": 0.018,
-            "h": 0.018
+            "rInner": 0.015,
+            "h": 0.015
           },
           {
             "kind": "tube",
             "position": [
               0,
-              0.21,
+              "-(z2 * m / 2000 + m / 1000) - 0.0275",
               0
             ],
             "rOuter": 0.03,
-            "rInner": 0.018,
-            "h": 0.018
+            "rInner": 0.015,
+            "h": 0.015
           }
         ]
       },
       {
         "id": "bearings_wheel",
-        "name": "Radial ball bearings (wheel)",
+        "name": "Output shaft bearings",
         "material": "bearing",
-        "role": "housing",
+        "role": "static",
         "explode": [
           0,
-          0,
-          0.08
+          0.08,
+          0
         ],
-        "cut": false,
         "info": {
-          "summary": "Deep-groove ball bearing set",
-          "role": "Locates the output shaft and absorbs radial reactions and moderate side thrust."
+          "summary": "A bearing in the front and back walls, on the output shaft.",
+          "role": "Carry the wheel's load into the housing."
         },
         "mount": {
           "kind": "coaxial",
           "target": "output_shaft",
-          "at": 0.18
+          "at": 0.5
         },
         "shapes": [
           {
             "kind": "tube",
+            "position": [
+              0,
+              "((q * m / 2000) + 0.035) + 0.0075",
+              0
+            ],
             "rOuter": 0.034,
             "rInner": 0.022,
-            "h": 0.018
+            "h": 0.015
           },
           {
             "kind": "tube",
             "position": [
               0,
-              0.18,
+              "-((q * m / 2000) + 0.035) - 0.0075",
               0
             ],
             "rOuter": 0.034,
             "rInner": 0.022,
-            "h": 0.018
+            "h": 0.015
           }
         ]
       }
@@ -410,7 +380,7 @@
         "unit": "N·m",
         "anchor": {
           "part": "worm_shaft",
-          "at": "start"
+          "at": "end"
         }
       },
       {
@@ -494,18 +464,18 @@
   "view": {
     "camera": {
       "position": [
-        0.42,
-        0.32,
-        0.48
+        0.38,
+        0.22,
+        0.55
       ],
       "target": [
         0,
-        0,
+        -0.04,
         0
       ]
     },
-    "extent": 0.45,
-    "floorY": -0.18,
+    "extent": 0.5,
+    "floorY": -0.2,
     "cut": {
       "enabled": true,
       "normal": [
@@ -513,12 +483,12 @@
         0,
         1
       ],
-      "pos": 0.02
+      "pos": 0.03
     }
   },
   "meta": {
     "generator": "Solidify (solidify.studio)",
     "license": "CC-BY-4.0",
-    "created": "2026-11-10"
+    "created": "2026-11-11"
   }
 }

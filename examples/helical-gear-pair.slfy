@@ -82,74 +82,143 @@
     "parts": [
       {
         "id": "mounting_base",
-        "name": "Gearbox Base Plate",
+        "name": "Gearbox Base and Pedestals",
         "material": "castIron",
         "role": "housing",
         "position": [
-          0.06,
-          -0.16,
+          0,
+          0,
           0
         ],
         "explode": [
           0,
-          -0.08,
+          -0.12,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "Rigid cast iron base plate with bearing pedestals.",
-          "role": "Maintains shaft center distance and supports bearing reaction loads."
+          "summary": "A base plate with four bearing pedestals, two under each shaft.",
+          "role": "Holds the shafts parallel at the centre distance the gears need."
         },
         "shapes": [
           {
             "kind": "box",
-            "sx": 0.38,
+            "position": [
+              "a * 0.001 / 2",
+              "-(0.0005 * d2 + 0.001 * mt + 0.02) - 0.012",
+              0
+            ],
+            "sx": "a * 0.001 + 0.22",
             "sy": 0.024,
-            "sz": 0.28
+            "sz": 0.3
           },
           {
             "kind": "box",
             "position": [
-              -0.06,
-              0.06,
-              0.09
+              0,
+              "(0.04 - (0.0005 * d2 + 0.001 * mt + 0.02)) / 2",
+              0.104
             ],
-            "sx": 0.04,
-            "sy": 0.12,
-            "sz": 0.04
+            "sx": 0.08,
+            "sy": "(0.0005 * d2 + 0.001 * mt + 0.02) + 0.04",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              0,
+              0,
+              0.104
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.0295,
+            "h": 0.04
           },
           {
             "kind": "box",
             "position": [
-              -0.06,
-              0.06,
-              -0.09
+              0,
+              "(0.04 - (0.0005 * d2 + 0.001 * mt + 0.02)) / 2",
+              -0.104
             ],
-            "sx": 0.04,
-            "sy": 0.12,
-            "sz": 0.04
+            "sx": 0.08,
+            "sy": "(0.0005 * d2 + 0.001 * mt + 0.02) + 0.04",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              0,
+              0,
+              -0.104
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.0295,
+            "h": 0.04
           },
           {
             "kind": "box",
             "position": [
-              0.18,
-              0.06,
-              0.09
+              "a * 0.001",
+              "(0.04 - (0.0005 * d2 + 0.001 * mt + 0.02)) / 2",
+              0.104
             ],
-            "sx": 0.04,
-            "sy": 0.12,
-            "sz": 0.04
+            "sx": 0.08,
+            "sy": "(0.0005 * d2 + 0.001 * mt + 0.02) + 0.04",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              "a * 0.001",
+              0,
+              0.104
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.0295,
+            "h": 0.04
           },
           {
             "kind": "box",
             "position": [
-              0.18,
-              0.06,
-              -0.09
+              "a * 0.001",
+              "(0.04 - (0.0005 * d2 + 0.001 * mt + 0.02)) / 2",
+              -0.104
             ],
-            "sx": 0.04,
-            "sy": 0.12,
-            "sz": 0.04
+            "sx": 0.08,
+            "sy": "(0.0005 * d2 + 0.001 * mt + 0.02) + 0.04",
+            "sz": 0.03
+          },
+          {
+            "kind": "cylinder",
+            "op": "subtract",
+            "position": [
+              "a * 0.001",
+              0,
+              -0.104
+            ],
+            "rotation": [
+              1.5708,
+              0,
+              0
+            ],
+            "r": 0.0295,
+            "h": 0.04
           }
         ]
       },
@@ -158,6 +227,11 @@
         "name": "Input Shaft",
         "material": "steel",
         "role": "moving",
+        "position": [
+          0,
+          0,
+          0
+        ],
         "rotation": [
           1.5708,
           0,
@@ -166,60 +240,40 @@
         "explode": [
           0,
           0,
-          -0.12
+          0.16
         ],
         "cut": false,
         "info": {
-          "summary": "High-strength alloy steel input drive shaft.",
-          "role": "Transmits input torque and accommodates radial and axial bearing reactions."
+          "summary": "The driving shaft, carrying the pinion.",
+          "role": "Brings the input torque to the pinion."
         },
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "rpm1 / 60"
-        },
-        "mount": {
-          "kind": "against",
-          "target": "mounting_base",
-          "face": "+y",
-          "shift": [
-            -0.12,
-            0.16,
-            0
-          ]
+          "speed": "rpm1 * 2 * pi / 60 / 20"
         },
         "shapes": [
           {
             "kind": "cylinder",
             "r": 0.014,
-            "h": 0.24
-          },
-          {
-            "kind": "cylinder",
-            "r": 0.018,
-            "h": 0.06
+            "h": 0.26
           }
         ]
       },
       {
         "id": "pinion",
-        "name": "Helical Pinion (25T)",
+        "name": "Helical Pinion",
         "material": "forged",
         "role": "moving",
         "explode": [
           0,
-          0.08,
+          0.1,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "Case-hardened 25-tooth right-hand helical pinion.",
-          "role": "Drives the mating wheel with smooth progressive tooth engagement along the helix."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "y",
-          "speed": "rpm1 / 60"
+          "summary": "The smaller gear, its teeth cut at the helix angle.",
+          "role": "Drives the wheel; angled teeth engage gradually, so it runs quietly but pushes along the shaft."
         },
         "mount": {
           "kind": "coaxial",
@@ -239,23 +293,18 @@
       },
       {
         "id": "driven_gear",
-        "name": "Helical Wheel (50T)",
+        "name": "Helical Wheel",
         "material": "steelMatte",
         "role": "moving",
         "explode": [
           0,
-          -0.08,
+          0.1,
           0
         ],
         "cut": false,
         "info": {
-          "summary": "50-tooth left-hand helical gear wheel.",
-          "role": "Receives torque from the pinion at reduced speed and opposite axial thrust."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "y",
-          "speed": "-rpm1 / (60 * u)"
+          "summary": "The larger gear, with the opposite hand of helix.",
+          "role": "Turns slower than the pinion by the ratio of the teeth, with more torque."
         },
         "mount": {
           "kind": "mesh",
@@ -270,12 +319,6 @@
             "teeth": "z2",
             "module": "mt * 0.001",
             "helixAngle": "-beta"
-          },
-          {
-            "kind": "cylinder",
-            "op": "subtract",
-            "r": "0.0005 * d2 - 0.012",
-            "h": "b * 0.001 * 0.4"
           }
         ]
       },
@@ -287,17 +330,12 @@
         "explode": [
           0,
           0,
-          0.12
+          0.16
         ],
         "cut": false,
         "info": {
-          "summary": "Heavy-duty parallel output shaft.",
-          "role": "Delivers multiplied torque to the load system."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "y",
-          "speed": "-rpm1 / (60 * u)"
+          "summary": "The driven shaft, carrying the wheel.",
+          "role": "Delivers the output torque."
         },
         "mount": {
           "kind": "coaxial",
@@ -308,39 +346,38 @@
           {
             "kind": "cylinder",
             "r": 0.02,
-            "h": 0.24
-          },
-          {
-            "kind": "cylinder",
-            "r": 0.024,
-            "h": "b * 0.001 + 0.01"
+            "h": 0.26
           }
         ]
       },
       {
         "id": "bearings",
-        "name": "Tapered Roller Bearings",
+        "name": "Input Shaft Bearings",
         "material": "bearing",
         "role": "static",
         "explode": [
           0,
           0,
-          -0.06
+          -0.1
         ],
-        "cut": false,
         "info": {
-          "summary": "Angular contact / tapered roller bearing pairs.",
-          "role": "Reacts combined radial loads and axial thrust induced by helical teeth."
+          "summary": "A bearing each side of the pinion, seated in the pedestals.",
+          "role": "Carry the radial load and the axial thrust of the helical teeth."
         },
         "mount": {
           "kind": "coaxial",
           "target": "pinion_shaft",
-          "at": 0.15
+          "at": 0.5
         },
         "shapes": [
           {
             "kind": "tube",
-            "rOuter": 0.028,
+            "position": [
+              0,
+              0.104,
+              0
+            ],
+            "rOuter": 0.03,
             "rInner": 0.014,
             "h": 0.022
           },
@@ -348,11 +385,55 @@
             "kind": "tube",
             "position": [
               0,
-              0.14,
+              -0.104,
               0
             ],
-            "rOuter": 0.028,
+            "rOuter": 0.03,
             "rInner": 0.014,
+            "h": 0.022
+          }
+        ]
+      },
+      {
+        "id": "bearings_out",
+        "name": "Output Shaft Bearings",
+        "material": "bearing",
+        "role": "static",
+        "explode": [
+          0,
+          0,
+          -0.1
+        ],
+        "info": {
+          "summary": "A bearing each side of the wheel, seated in the pedestals.",
+          "role": "Carry the wheel's radial load and its equal, opposite thrust."
+        },
+        "mount": {
+          "kind": "coaxial",
+          "target": "output_shaft",
+          "at": 0.5
+        },
+        "shapes": [
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              0.104,
+              0
+            ],
+            "rOuter": 0.03,
+            "rInner": 0.02,
+            "h": 0.022
+          },
+          {
+            "kind": "tube",
+            "position": [
+              0,
+              -0.104,
+              0
+            ],
+            "rOuter": 0.03,
+            "rInner": 0.02,
             "h": 0.022
           }
         ]
@@ -380,7 +461,7 @@
           "part": "pinion",
           "at": "+x"
         },
-        "direction": "+y",
+        "direction": "+z",
         "length": 0.1
       },
       {
@@ -393,7 +474,7 @@
           "part": "pinion",
           "at": "+x"
         },
-        "direction": "+z",
+        "direction": "-y",
         "length": 0.12
       }
     ],
@@ -490,18 +571,18 @@
   "view": {
     "camera": {
       "position": [
-        0.45,
-        0.35,
-        0.48
+        -0.25,
+        0.38,
+        0.7
       ],
       "target": [
         0.06,
-        0.02,
+        -0.03,
         0
       ]
     },
-    "extent": 0.55,
-    "floorY": -0.22,
+    "extent": 0.6,
+    "floorY": -0.2,
     "cut": {
       "enabled": false,
       "normal": [
@@ -515,6 +596,6 @@
   "meta": {
     "generator": "Solidify (solidify.studio)",
     "license": "CC-BY-4.0",
-    "created": "2026-11-10"
+    "created": "2026-11-11"
   }
 }
