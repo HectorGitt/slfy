@@ -95,6 +95,11 @@
           "summary": "Cast iron hollow sleeve (muff)",
           "role": "Encloses the shaft ends and transmits torque across the junction through the key."
         },
+        "motion": {
+          "kind": "rotate",
+          "axis": "y",
+          "speed": 2
+        },
         "shapes": [
           {
             "kind": "tube",
@@ -118,12 +123,81 @@
             "kind": "cylinder",
             "op": "subtract",
             "position": [
-              "D_outer / 4000",
+              "(d + h_key + D_outer) / 4000",
               0,
               0
             ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
             "r": 0.004,
-            "h": "D_outer / 1000"
+            "h": "(D_outer - d - h_key) / 2000 + 0.002"
+          }
+        ],
+        "children": [
+          {
+            "id": "key",
+            "name": "Sunk key",
+            "material": "steelDark",
+            "role": "moving",
+            "position": [
+              "d / 2000",
+              0,
+              0
+            ],
+            "explode": [
+              0,
+              0.07,
+              0
+            ],
+            "cut": false,
+            "info": {
+              "summary": "Parallel sunk key",
+              "role": "Bridges both shafts and the sleeve bore to transmit torque by shear and bearing."
+            },
+            "shapes": [
+              {
+                "kind": "box",
+                "sx": "h_key / 1000",
+                "sy": "L_sleeve / 1000 - 0.004",
+                "sz": "w_key / 1000"
+              }
+            ]
+          },
+          {
+            "id": "setscrew",
+            "name": "Locking setscrew",
+            "material": "steelMatte",
+            "role": "moving",
+            "position": [
+              "(d + h_key + D_outer) / 4000",
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              1.5708
+            ],
+            "explode": [
+              0,
+              0.11,
+              0
+            ],
+            "cut": false,
+            "info": {
+              "summary": "Socket head setscrew",
+              "role": "Clamps radially against the key to prevent axial wandering of the sleeve."
+            },
+            "shapes": [
+              {
+                "kind": "cylinder",
+                "r": 0.0038,
+                "h": "(D_outer - d - h_key) / 2000"
+              }
+            ]
           }
         ]
       },
@@ -142,11 +216,6 @@
           "summary": "Driving input shaft",
           "role": "Transfers rotational power from the driver into the coupling assembly."
         },
-        "motion": {
-          "kind": "rotate",
-          "axis": "x",
-          "speed": 1
-        },
         "mount": {
           "kind": "coaxial",
           "target": "sleeve",
@@ -163,7 +232,7 @@
             "kind": "box",
             "op": "subtract",
             "position": [
-              "d / 2000 - h_key / 4000",
+              "-(d / 2000 - h_key / 4000)",
               "0.08 - L_sleeve / 4000",
               0
             ],
@@ -188,11 +257,6 @@
           "summary": "Driven output shaft",
           "role": "Receives torque through the coupling to drive the attached load."
         },
-        "motion": {
-          "kind": "rotate",
-          "axis": "x",
-          "speed": 1
-        },
         "mount": {
           "kind": "coaxial",
           "target": "sleeve",
@@ -209,85 +273,13 @@
             "kind": "box",
             "op": "subtract",
             "position": [
-              "d / 2000 - h_key / 4000",
+              "-(d / 2000 - h_key / 4000)",
               "-0.08 + L_sleeve / 4000",
               0
             ],
             "sx": "h_key / 2000 + 0.001",
             "sy": "L_sleeve / 2000 + 0.002",
             "sz": "w_key / 1000"
-          }
-        ]
-      },
-      {
-        "id": "key",
-        "name": "Sunk key",
-        "material": "steelDark",
-        "role": "moving",
-        "explode": [
-          0,
-          0.07,
-          0
-        ],
-        "cut": false,
-        "info": {
-          "summary": "Parallel sunk key",
-          "role": "Bridges both shafts and the sleeve bore to transmit torque by shear and bearing."
-        },
-        "motion": {
-          "kind": "rotate",
-          "axis": "x",
-          "speed": 1
-        },
-        "mount": {
-          "kind": "coaxial",
-          "target": "sleeve",
-          "at": 0.5,
-          "shift": [
-            "d / 2000",
-            0,
-            0
-          ]
-        },
-        "shapes": [
-          {
-            "kind": "box",
-            "sx": "h_key / 1000",
-            "sy": "L_sleeve / 1000 - 0.004",
-            "sz": "w_key / 1000"
-          }
-        ]
-      },
-      {
-        "id": "setscrew",
-        "name": "Locking setscrew",
-        "material": "steelMatte",
-        "role": "static",
-        "explode": [
-          0,
-          0.11,
-          0
-        ],
-        "cut": false,
-        "info": {
-          "summary": "Socket head setscrew",
-          "role": "Clamps radially against the key to prevent axial wandering of the sleeve."
-        },
-        "mount": {
-          "kind": "coaxial",
-          "target": "sleeve",
-          "at": 0.5,
-          "shift": [
-            "D_outer / 2000 - 0.004",
-            0,
-            0
-          ]
-        },
-        "shapes": [
-          {
-            "kind": "cylinder",
-            "r": 0.0038,
-            "h": 0.014
           }
         ]
       }
