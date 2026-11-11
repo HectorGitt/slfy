@@ -672,6 +672,40 @@
                 "angle"
               ],
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "keyed"
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "r": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "at": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "offset": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "angle": {
+                  "$ref": "#/$defs/__schema5"
+                },
+                "shift": {
+                  "$ref": "#/$defs/__schema4"
+                }
+              },
+              "required": [
+                "kind",
+                "target"
+              ],
+              "additionalProperties": false
             }
           ]
         },

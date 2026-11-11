@@ -135,8 +135,9 @@ mount on them; cycles are invalid. `shift` (Vec3Expr, metres, world axes) moves 
 | `lever` | `pivot`, `throw`, `angle`, `direction` | a slotted lever pivoting on part `pivot`, always pointing through the target's crank pin (quick-return) |
 | `follower` | `direction`, `of` (`pin` or `tip`), `throw`, `angle`, `offset` | slides along `direction` with the target's crank pin (scotch yoke) or a lever's far end (shaper ram); fixed across that direction |
 | `hooke` | `angle` (degrees) | the output shaft of a Hooke's joint at the end of input shaft `target`, its axis `angle` off the input's; it turns by tan θ₂ = tan θ₁ / cos β |
+| `keyed` | `r`, `at` (0–1, default 0.5), `offset`, `angle` (degrees) | a key in the keyway of shaft `target`: its longest side along the shaft, its thinnest radial, its middle at radius `r` from the axis (the shaft's radius there; half in the shaft, half in the hub), `at` along the shaft, `angle` round it from the top. It turns with the shaft |
 
-A part placed by a mount that transmits motion (`mesh`, `slider`, `link`, `lever`, `follower`, `hooke`, and
+A part placed by a mount that transmits motion (`mesh`, `slider`, `link`, `lever`, `follower`, `hooke`, `keyed`, and
 `coaxial` on a turning shaft) moves because its target moves; it SHOULD NOT also have its own `motion`.
 
 ### 7.3 Motion

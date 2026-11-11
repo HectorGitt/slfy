@@ -62,7 +62,7 @@
     "parts": [
       {
         "id": "frame",
-        "name": "Shaper Column and Base",
+        "name": "Shaper Column, Base and Worktable",
         "material": "castIron",
         "role": "housing",
         "position": [
@@ -77,7 +77,7 @@
         ],
         "cut": false,
         "info": {
-          "summary": "The machine's column on its base, with the ram's guideway on top.",
+          "summary": "The machine's column on its base, with the ram's guideway on top and the worktable and vice in front.",
           "role": "Carries the bull gear's stub shaft, the lever's pivot and the ram."
         },
         "shapes": [
@@ -132,6 +132,39 @@
             ],
             "r": 0.03,
             "h": 0.03
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.38,
+              "(((L_lever - c - 0.07) - 0.36) / 2) + (0)",
+              -0.06
+            ],
+            "sx": 0.09,
+            "sy": "(L_lever - c - 0.07) + 0.24",
+            "sz": 0.09
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.38,
+              "((L_lever - c - 0.07) - 0.045) + (0)",
+              -0.06
+            ],
+            "sx": 0.24,
+            "sy": 0.03,
+            "sz": 0.18
+          },
+          {
+            "kind": "box",
+            "position": [
+              0.38,
+              "((L_lever - c - 0.07) - 0.015) + (0)",
+              -0.06
+            ],
+            "sx": 0.11,
+            "sy": 0.03,
+            "sz": 0.06
           }
         ]
       },
@@ -449,62 +482,6 @@
             "sx": 0.014,
             "sy": 0.06,
             "sz": 0.014
-          }
-        ]
-      },
-      {
-        "id": "work_table",
-        "name": "Worktable and Vice",
-        "material": "castIron",
-        "role": "static",
-        "position": [
-          0.38,
-          0,
-          -0.06
-        ],
-        "explode": [
-          0.2,
-          0,
-          0
-        ],
-        "cut": false,
-        "info": {
-          "summary": "The table in front of the column, with a vice holding the work.",
-          "role": "Holds the work still under the tool's path."
-        },
-        "shapes": [
-          {
-            "kind": "box",
-            "position": [
-              0,
-              "((L_lever - c - 0.07) - 0.36) / 2",
-              0
-            ],
-            "sx": 0.09,
-            "sy": "(L_lever - c - 0.07) + 0.24",
-            "sz": 0.09
-          },
-          {
-            "kind": "box",
-            "position": [
-              0,
-              "(L_lever - c - 0.07) - 0.045",
-              0
-            ],
-            "sx": 0.24,
-            "sy": 0.03,
-            "sz": 0.18
-          },
-          {
-            "kind": "box",
-            "position": [
-              0,
-              "(L_lever - c - 0.07) - 0.015",
-              0
-            ],
-            "sx": 0.11,
-            "sy": 0.03,
-            "sz": 0.06
           }
         ]
       }
