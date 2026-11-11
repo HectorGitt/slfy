@@ -98,7 +98,7 @@
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "N1 * 2 * pi / 60 / 20"
+          "speed": "N1 * 2 * pi / 60"
         },
         "shapes": [
           {

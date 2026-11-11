@@ -186,7 +186,7 @@
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "n_in * 2 * pi / 60 / 25"
+          "speed": "n_in * 2 * pi / 60"
         },
         "shapes": [
           {
@@ -236,7 +236,7 @@
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "(n_in * 2 * pi / 60 / 25) / (z2 / z1)"
+          "speed": "(n_in * 2 * pi / 60) / (z2 / z1)"
         },
         "shapes": [
           {

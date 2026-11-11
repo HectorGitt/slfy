@@ -250,7 +250,7 @@
         "motion": {
           "kind": "rotate",
           "axis": "y",
-          "speed": "rpm1 * 2 * pi / 60 / 20"
+          "speed": "rpm1 * 2 * pi / 60"
         },
         "shapes": [
           {
